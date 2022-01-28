@@ -1,20 +1,19 @@
 Dependencies:
-  Pillow:
-  WConio2:
-  Colorama:
-  MultipleDispatch:
-  Numpy:
-  OpenCV-Python:
-  Pytweening:
+  Pillow:           pip install pillow
+  WConio2:          pip install wconio2
+  Colorama:         pip install colorama
+  MultipleDispatch: pip install multipledispatch
+  Numpy:            pip install numpy
+  CV2:              pip install OpenCV-Python
+  Pytweening:       pip install pytweening
 
 Windows:
-  CTypes:
+  Tkinter: pip install tk
 
 Linux:
-  Xlib:
-  Xlib: xhost +
+  Xlib:    pip install xlib
+  Xlib:    xhost +
   Tkinter: sudo apt-get install python3-tk
-  Tkinter:
 
 OS X:
   Quartz:
