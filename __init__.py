@@ -5,6 +5,7 @@ from Keyboard import *
 from Mouse import *
 from Screen import *
 from Delays import *
+import _Platform_Convergence
 
 
 def test_mouse():
@@ -68,5 +69,10 @@ def test_delays():
 #r = z['data']
 #print()
 
-
-
+#_Gui_Win.app
+z = _Platform_Convergence.test()
+z.start("notepad.exe")
+z["UntitledNotepad"].menu_select("Help->About Notepad")
+z["AboutNotepad"]["OK"].click()
+z["UntitledNotepad"]["Edit"].type_keys("pywinauto Works!", with_spaces = True)
+print()

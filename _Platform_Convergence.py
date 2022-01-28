@@ -549,6 +549,7 @@ if sys.platform == "darwin":
 elif sys.platform == "win32":
     # noinspection PyPep8Naming
     import _Rpa_Win as platform_module
+    import _Gui_Win as gui
 elif platform.system() == "Linux":
     # noinspection PyPep8Naming
     import _Rpa_Linux as platform_module
@@ -1583,6 +1584,23 @@ def _run_command_list(command_list, _ss_count):
             i += 2
         i += 1
 # endregion
+
+
+class test:
+    app = None
+
+    def __iter__(self):
+        """Raise to avoid infinite loops"""
+        raise NotImplementedError("Object is not iterable, try to use .windows()")
+
+    def __getitem__(self, index):
+        return self.app[index]
+
+    def __getattribute__(self, attr_name):
+        return object.__getattribute__(self, attr_name)
+
+    def start(self, path):
+        self.app = gui.Application().start(path)
 
 
 # Add the bottom left, top right, and bottom right corners to FAILSAFE_POINTS.
