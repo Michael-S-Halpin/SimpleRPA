@@ -159,7 +159,7 @@ class INPUT(ctypes.Structure):
 
 # region LOAD QWERTY KEYBOARD MAPPING
 # Documented at http://msdn.microsoft.com/en-us/library/windows/desktop/dd375731(v=vs.85).aspx
-# The *KB dictionaries in pyautogui map a string that can be passed to keyDown(),
+# The *KB dictionaries in SimpeRPA map a string that can be passed to keyDown(),
 # keyUp(), or press() into the code used for the OS-specific keyboard function.
 # They should always be lowercase, and the same keys should be used across all operating systems.
 

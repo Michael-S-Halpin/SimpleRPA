@@ -32,7 +32,6 @@ import AppKit
 import _Platform_Convergence
 from _Platform_Convergence import LEFT, MIDDLE, RIGHT
 
-# TODO: Strip all references to pyautogui
 
 # noinspection PyBroadException
 try:

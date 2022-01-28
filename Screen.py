@@ -27,7 +27,6 @@ import _Platform_Convergence
 from _Widget import Widget
 from PIL import ImageGrab
 from tkinter import *
-# TODO: Add screen capture option in settings.
 
 
 class ScreenConfig:

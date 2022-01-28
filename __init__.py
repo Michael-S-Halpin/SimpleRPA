@@ -1,3 +1,5 @@
+import json
+
 import Delays
 from Keyboard import *
 from Mouse import *
@@ -58,4 +60,13 @@ def test_delays():
 #test_mouse()
 #test_keyboard()
 #test_screen()
-test_delays()
+#test_delays()
+
+#f = open('test.json')
+#z = json.load(f)
+#q = z['test']
+#r = z['data']
+#print()
+
+
+

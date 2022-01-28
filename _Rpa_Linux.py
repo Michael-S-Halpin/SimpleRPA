@@ -37,7 +37,7 @@ from Xlib.ext.xtest import fake_input
 BUTTON_NAME_MAPPING = {LEFT: 1, MIDDLE: 2, RIGHT: 3, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7}
 
 if sys.platform in ('java', 'darwin', 'win32'):
-    raise Exception('The pyautogui_x11 module should only be loaded on a Unix system that supports X11.')
+    raise Exception('The SimpleRPA module should only be loaded on a Unix system that supports X11.')
 
 """
 Much of this code is based on information gleaned from Paul Barton's PyKeyboard in PyUserInput from 2013, itself 
@@ -182,7 +182,7 @@ def _key_up(key):
 _display = Display(os.environ['DISPLAY'])
 
 """ Information for keyboardMapping derived from PyKeyboard's special_key_assignment() function.
-The *KB dictionaries in pyautogui map a string that can be passed to keyDown(),
+The *KB dictionaries in SimpleRPA map a string that can be passed to keyDown(),
 keyUp(), or press() into the code used for the OS-specific keyboard function.
 They should always be lowercase, and the same keys should be used across all OSes."""
 

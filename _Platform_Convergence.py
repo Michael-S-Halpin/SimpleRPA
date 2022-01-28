@@ -42,9 +42,6 @@ collectionsSequence = collections.abc.Sequence  # type: ignore
 version = "1.0"
 
 
-# TODO: TRIM THIS FILE
-
-
 # region CUSTOM EXCEPTIONS
 class SimpleRPAException(Exception):
     """
