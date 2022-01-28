@@ -89,8 +89,8 @@ class Delays:
         img1 = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
         end = time.time() + config.timeout
-        y = pt[0] + img1.shape[0]
-        x = pt[1] + img1.shape[1]
+        y = pt[1] + img1.shape[0]
+        x = pt[0] + img1.shape[1]
         while time.time() < end:
             img2 = Screen.capture((pt[0], pt[1], x, y))
 
