@@ -109,6 +109,9 @@ class Screen:
         :return: image
         """
 
+        if config is None:
+            config = ScreenConfig()
+
         image = ImageGrab.grab(bbox=(rct[0], rct[1], rct[2], rct[3]), all_screens=True)
         Screen._handle_widget_rct(rct, config)
 
@@ -126,6 +129,9 @@ class Screen:
         :param config: The configuration object that contains setting for how this action should be performed.
         :return: void
         """
+
+        if config is None:
+            config = ScreenConfig()
 
         image = Screen.capture(rct)
         img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)

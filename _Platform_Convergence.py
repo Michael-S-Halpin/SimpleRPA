@@ -72,8 +72,6 @@ class ImageNotFoundException(SimpleRPAException):
     function call is unable to find an image.
     Ideally, `pyscreeze.ImageNotFoundException` should never be raised by SimpleRPA.
     """
-
-
 # endregion
 
 
@@ -162,8 +160,6 @@ except ImportError:
     easeInBounce = _could_not_import_py_tweening
     easeOutBounce = _could_not_import_py_tweening
     easeInOutBounce = _could_not_import_py_tweening
-
-
 # endregion
 
 
@@ -271,7 +267,7 @@ except ImportError:
 # endregion
 
 
-# region IMPORTS MOUSE INFO
+# region IMPORTS MOUSE INFO TODO: Another thing we can get rid of eventually.
 try:
     # noinspection PyUnresolvedReferences
     import mouseinfo
@@ -301,24 +297,6 @@ except ImportError:
 
 
 # endregion
-
-
-def use_image_not_found_exception(value=None):
-    """
-    When called with no arguments, SimpleRPA will raise ImageNotFoundException when the PyScreeze locate*() functions
-    can't find the image it was told to locate. The default behavior is to return None. Call this function with no
-    arguments (or with True as the argument) to have exceptions raised, which is a better practice.
-    You can also disable raising exceptions by passing False for the argument.
-    :param value:
-    :return:
-    """
-    if value is None:
-        value = True
-    # TODO - this will cause a NameError if PyScreeze couldn't be imported:
-    try:
-        pyscreeze.USE_IMAGE_NOT_FOUND_EXCEPTION = value
-    except NameError:
-        raise SimpleRPAException("use_image_not_found_exception() ws called but pyscreeze isn't installed.")
 
 
 if sys.platform == "win32":  # PyGetWindow currently only supports Windows.
@@ -566,7 +544,6 @@ SECONDARY = "secondary"
 QWERTY = r"""`1234567890-=qwertyuiop[]\asdfghjkl;'zxcvbnm,./~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:"ZXCVBNM<>?"""
 QWERTZ = r"""=1234567890/0qwertzuiop89-asdfghjkl,\yxcvbnm,.7+!@#$%^&*()?)QWERTZUIOP*(_ASDFGHJKL<|YXCVBNM<>&"""
 # endregion
-
 
 # region IMPORTS PLATFORM SPECIFIC RPA
 if sys.platform == "darwin":
@@ -847,8 +824,6 @@ def on_screen(x, y=None):
 
     width, height = platform_module._size()
     return 0 <= x < width and 0 <= y < height
-
-
 # endregion
 
 
@@ -942,7 +917,7 @@ def mouse_down(x=None, y=None, button=PRIMARY, tween=linear, log_screenshot=None
     platform_module._mouse_down(x, y, button)
 
     if pause > 0:
-        sleep(pause)
+        time.sleep(pause)
 
 
 # noinspection PyProtectedMember
@@ -1042,7 +1017,7 @@ def scroll(clicks, x=None, y=None, log_screenshot=None, pause=0):
     platform_module._scroll(clicks, x, y)
 
     if pause > 0:
-        sleep(pause)
+        time.sleep(pause)
 
 
 @_generic_simple_rpa_checks
@@ -1196,28 +1171,10 @@ def mouse_move_drag(move_or_drag, x1, y1, x2, y2, duration, tween=linear, button
     # noinspection PyUnboundLocalVariable
     if (tween_x, tween_y) not in FAILSAFE_POINTS:
         fail_safe_check()
-
-
 # endregion
 
 
 # region KEYBOARD METHODS
-def is_valid_key(key):
-    """
-    Returns a Boolean value if the given key is a valid value to pass to
-    SimpleRPA's keyboard-related functions for the current platform.
-    This function is here because passing an invalid value to the SimpleRPA
-    keyboard functions currently is a no-op that does not raise an exception.
-    Some keys are only valid on some platforms. For example, while 'esc' is
-    valid for the Escape key on all platforms, 'browserback' is only used on
-    Windows operating systems.
-    :param key: The key value.
-    :return: bool
-    """
-
-    return platform_module.keyboardMapping.get(key, None) is not None
-
-
 # noinspection PyProtectedMember
 @_generic_simple_rpa_checks
 def key_down(key, log_screenshot=None, _pause=True):
@@ -1294,43 +1251,7 @@ def press(keys, presses=1, interval=0.0, log_screenshot=None, pause=0):
         time.sleep(interval)
 
     if pause > 0:
-        sleep(pause)
-
-
-# noinspection DuplicatedCode,PyProtectedMember
-@contextmanager
-@_generic_simple_rpa_checks
-def hold(keys, log_screenshot=None, _pause=True):
-    """
-    Context manager that performs a keyboard key press down upon entry, followed by a release upon exit.
-    :param keys: The key to be pressed. The valid names are listed in KEYBOARD_KEYS. Can also be a list of such strings.
-    :param log_screenshot: If true a screenshot is taken during the operation.
-    :param _pause:
-    :return: void
-    """
-
-    if type(keys) == str:
-        if len(keys) > 1:
-            keys = keys.lower()
-        keys = [keys]  # If keys is 'enter', convert it to ['enter'].
-    else:
-        lower_keys = []
-        for s in keys:
-            if len(s) > 1:
-                lower_keys.append(s.lower())
-            else:
-                lower_keys.append(s)
-        keys = lower_keys
-    _log_screenshot(log_screenshot, "press", ",".join(keys), folder=".")
-    for k in keys:
-        fail_safe_check()
-        platform_module._key_down(k)
-    try:
-        yield
-    finally:
-        for k in keys:
-            fail_safe_check()
-            platform_module._key_up(k)
+        time.sleep(pause)
 
 
 @_generic_simple_rpa_checks
@@ -1359,7 +1280,7 @@ def typewrite(message, interval=0.0, log_screenshot=None, pause=0):
         fail_safe_check()
 
     if pause > 0:
-        sleep(pause)
+        time.sleep(pause)
 # endregion
 
 
@@ -1375,113 +1296,6 @@ def fail_safe_check():
             "SimpleRPA fail-safe triggered from mouse moving to a corner of the screen. To disable this fail-safe, set "
             "SimpleRPA.FAILSAFE to False. DISABLING FAIL-SAFE IS NOT RECOMMENDED."
         )
-
-
-# noinspection PyBroadException
-def display_mouse_position(x_offset=0, y_offset=0):
-    """
-    This function is meant to be run from the command line. It will
-    automatically display the location and RGB of the mouse cursor.
-    :param x_offset:
-    :param y_offset:
-    :return:
-    """
-
-    try:
-        running_idle = sys.stdin.__module__.startswith("idlelib")
-
-    except:
-        running_idle = False
-
-    print("Press Ctrl-C to quit.")
-    if x_offset != 0 or y_offset != 0:
-        print("xOffset: %s yOffset: %s" % (x_offset, y_offset))
-    try:
-        while True:
-            # Get and print the mouse coordinates.
-            x, y = position()
-            position_str = "X: " + str(x - x_offset).rjust(4) + " Y: " + str(y - y_offset).rjust(4)
-            if not on_screen(x - x_offset, y - y_offset) or sys.platform == "darwin":
-                # Pixel color can only be found for the primary monitor, and also not on mac due to the screenshot
-                # having the mouse cursor in the way.
-                pixel_color = ("NaN", "NaN", "NaN")
-            else:
-                pixel_color = pyscreeze.screenshot().getpixel(
-                    (x, y)
-                )  # NOTE: On Windows & Linux, getpixel() returns a 3-integer tuple, but on macOS it returns a
-                # 4-integer tuple.
-            position_str += " RGB: (" + str(pixel_color[0]).rjust(3)
-            position_str += ", " + str(pixel_color[1]).rjust(3)
-            position_str += ", " + str(pixel_color[2]).rjust(3) + ")"
-            sys.stdout.write(position_str)
-            if not running_idle:
-                # If this is a terminal, then we can erase the text by printing \b backspaces.
-                sys.stdout.write("\b" * len(position_str))
-            else:
-                # If this isn't a terminal (i.e. IDLE) then we can only append more text. Print a newline instead and
-                # pause a second (so we don't send too much output).
-                sys.stdout.write("\n")
-                time.sleep(1)
-            sys.stdout.flush()
-    except KeyboardInterrupt:
-        sys.stdout.write("\n")
-        sys.stdout.flush()
-
-
-# noinspection PyUnusedLocal,PyProtectedMember
-def _snapshot(tag, folder=None, region=None, radius=None):
-    """
-    :param tag:
-    :param folder:
-    :param region:
-    :param radius:
-    :return:
-    """
-
-    # TODO feature not finished
-    if region is not None and radius is not None:
-        raise Exception("Either region or radius arguments (or neither) can be passed to snapshot, but not both")
-
-    if radius is not None:
-        x, y = platform_module._position()
-
-    if folder is None:
-        folder = os.getcwd()
-
-    now = datetime.datetime.now()
-    filename = "%s-%s-%s_%s-%s-%s-%s_%s.png" % (
-        now.year,
-        str(now.month).rjust(2, "0"),
-        str(now.day).rjust(2, "0"),
-        now.hour,
-        now.minute,
-        now.second,
-        str(now.microsecond)[:3],
-        tag,
-    )
-    filepath = os.path.join(folder, filename)
-    screenshot(filepath)
-
-
-def sleep(seconds):
-    """
-    :param seconds:
-    :return:
-    """
-
-    time.sleep(seconds)
-
-
-def countdown(seconds):
-    """
-    :param seconds:
-    :return:
-    """
-
-    for i in range(seconds, 0, -1):
-        print(str(i), end=" ", flush=True)
-        time.sleep(1)
-    print()
 
 
 def _get_number_token(command_str):
@@ -1737,7 +1551,7 @@ def _run_command_list(command_list, _ss_count):
             screenshot("screenshot%s.png" % (_ss_count[0]))
             _ss_count[0] += 1
         elif command == "s":
-            sleep(float(command_list[i + 1]))
+            time.sleep(float(command_list[i + 1]))
             i += 1
         elif command == "p":
             PAUSE = float(command_list[i + 1])
@@ -1771,131 +1585,6 @@ def _run_command_list(command_list, _ss_count):
                 _run_command_list(command_list[i + 2], _ss_count)
             i += 2
         i += 1
-
-
-def _tween(tween_type):
-    """
-    Is used to set the tweening type (how the mouse will move to a point).
-    :return: tween
-    """
-
-    if tween_type == "IN_QUAD":
-        return easeInQuad
-    elif tween_type == "OUT_QUAD":
-        return easeOutQuad
-    elif tween_type == "IN_OUT_QUAD":
-        return easeInOutQuad
-    elif tween_type == "IN_CUBIC":
-        return easeInCubic
-    elif tween_type == "OUT_CUBIC":
-        return easeOutCubic
-    elif tween_type == "IN_OUT_CUBIC":
-        return easeInOutCubic
-    elif tween_type == "IN_QUART":
-        return easeInQuart
-    elif tween_type == "OUT_QUART":
-        return easeOutQuart
-    elif tween_type == "IN_OUT_QUART":
-        return easeInOutQuart
-    elif tween_type == "IN_QUINT":
-        return easeInQuint
-    elif tween_type == "OUT_QUINT":
-        return easeOutQuint
-    elif tween_type == "IN_OUT_QUINT":
-        return easeInOutQuint
-    elif tween_type == "IN_SINE":
-        return easeInSine
-    elif tween_type == "OUT_SINE":
-        return easeOutSine
-    elif tween_type == "IN_OUT_SINE":
-        return easeInOutSine
-    elif tween_type == "IN_EXPO":
-        return easeInExpo
-    elif tween_type == "OUT_EXPO":
-        return easeOutExpo
-    elif tween_type == "IN_OUT_EXPO":
-        return easeInOutExpo
-    elif tween_type == "IN_CIRC":
-        return easeInCirc
-    elif tween_type == "OUT_CIRC":
-        return easeOutCirc
-    elif tween_type == "IN_OUT_CIRC":
-        return easeInOutCirc
-    elif tween_type == "IN_ELASTIC":
-        return easeInElastic
-    elif tween_type == "OUT_ELASTIC":
-        return easeOutElastic
-    elif tween_type == "IN_OUT_ELASTIC":
-        return easeOutElastic
-    elif tween_type == "IN_BACK":
-        return easeInBack
-    elif tween_type == "OUT_BACK":
-        return easeOutBack
-    elif tween_type == "IN_OUT_BACK":
-        return easeInOutBack
-    elif tween_type == "IN_BOUNCE":
-        return easeInBounce
-    elif tween_type == "OUT_BOUNCE":
-        return easeOutBounce
-    elif tween_type == "IN_OUT_BOUNCE":
-        return easeInOutBounce
-    else:
-        return linear
-
-
-def run(command_str, _ss_count=None):
-    """
-    Run a series of SimpleRPA function calls according to a mini-language
-    made for this function. The `command_str` is composed of character
-    commands that represent SimpleRPA function calls.
-    For example, `run('ccg-20,+0c')` clicks the mouse twice, then makes
-    the mouse cursor go 20 pixels to the left, then click again.
-    Whitespace between commands and arguments is ignored. Command characters
-    must be lowercase. Quotes must be single quotes.
-    For example, the previous call could also be written as `run('c c g -20, +0 c')`.
-    The character commands and their equivalents are here:
-    `c` => `click(button=PRIMARY)`
-    `l` => `click(button=LEFT)`
-    `m` => `click(button=MIDDLE)`
-    `r` => `click(button=RIGHT)`
-    `su` => `scroll(1) # scroll up`
-    `sd` => `scroll(-1) # scroll down`
-    `ss` => `screenshot('screenshot1.png') # filename number increases on its own`
-    `gX,Y` => `moveTo(X, Y)`
-    `g+X,-Y` => `move(X, Y) # The + or - prefix is the difference between move() and moveTo()`
-    `dX,Y` => `dragTo(X, Y)`
-    `d+X,-Y` => `drag(X, Y) # The + or - prefix is the difference between drag() and dragTo()`
-    `k'key'` => `press('key')`
-    `w'text'` => `write('text')`
-    `h'key,key,key'` => `hotkey(*'key,key,key'.replace(' ', '').split(','))`
-    `a'hello'` => `alert('hello')`
-    `sN` => `sleep(N) # N can be an int or float`
-    `pN` => `PAUSE = N # N can be an int or float`
-    `fN(commands)` => for i in range(N): run(commands)
-    Note that any changes to `PAUSE` with the `p` command will be undone when
-    this function returns. The original `PAUSE` setting will be reset.
-    :param command_str:
-    :param _ss_count:
-    :return: void
-    """
-
-    # run("ccc")  straight forward
-    # run("susu") if 's' then peek at the next character
-    global PAUSE
-
-    if _ss_count is None:
-        _ss_count = [
-            0
-        ]  # Setting this to a mutable list so that the callers can read the changed value. TODO improve this comment
-
-    command_list = _tokenize_command_str(command_str)
-
-    # Carry out each command.
-    original_pause = PAUSE
-    _run_command_list(command_list, _ss_count)
-    PAUSE = original_pause
-
-
 # endregion
 
 
