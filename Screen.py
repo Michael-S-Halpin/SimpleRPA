@@ -54,6 +54,9 @@ class Screen:
         :return: Color
         """
 
+        if config is None:
+            config = ScreenConfig()
+
         image = ImageGrab.grab(bbox=(pt[0], pt[1], pt[0] + 1, pt[1] + 1))
         pixel = image.getpixel((0, 0))
         Screen._handle_widget_pt(pt, config)
@@ -73,6 +76,9 @@ class Screen:
         :return: Color
         """
 
+        if config is None:
+            config = ScreenConfig()
+
         known_colors = KnownColors.get_known_colors()
         Screen._handle_widget_pt(pt, config)
 
@@ -90,6 +96,9 @@ class Screen:
         :param config: The configuration object that contains setting for how this action should be performed.
         :return: Color
         """
+
+        if config is None:
+            config = ScreenConfig()
 
         console_colors = KnownColors.get_console_colors()
         Screen._handle_widget_pt(pt, config)
@@ -275,13 +284,16 @@ class Screen:
 
     @staticmethod
     def _compare_image(img1, img2):
+        g1 = gray = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
+        g2 = gray = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
+
         h1 = cv2.calcHist([img1], [0], None, [256], [0, 256])
         h2 = cv2.calcHist([img2], [0], None, [256], [0, 256])
 
         hist_diff = cv2.compareHist(h1, h2, cv2.HISTCMP_BHATTACHARYYA)
         probability_match = \
             cv2.matchTemplate(h1, h2, cv2.TM_CCOEFF_NORMED)[0][0]
-        diff = 1 - probability_match
+        diff = 1 - abs(probability_match)
 
         # taking only 10% of histogram diff, since it's less accurate than template method
         image_diff = (hist_diff / 10) + diff
