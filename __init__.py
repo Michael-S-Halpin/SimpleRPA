@@ -1,15 +1,14 @@
-import sys
-import json
-import time
+import Delays
 from Keyboard import *
 from Mouse import *
 from Screen import *
-from colorama import Fore
+from Delays import *
 
 
 def test_mouse():
     mc = MouseConfig()
-    #Mouse.move((70, 70))
+    mc.log_screenshot = True
+    Mouse.move((70, 70), mc)
     #Mouse.down((70, 70))
     #Mouse.move((150, 70))
     #Mouse.up((150, 70))
@@ -19,7 +18,7 @@ def test_mouse():
     #Mouse.drag((70,70), (150, 70), config) # TODO: Not working Linux
     #time.sleep(3)
     #Mouse.scroll(-5)
-    #print()
+    print()
 
 
 def test_keyboard():
@@ -43,6 +42,20 @@ def test_screen():
     loc = Screen.find_image('/home/michaelhalpin/PycharmProjects/SimpleRPA/icon.bmp')
     print()
 
-#test_mouse()
+
+def test_delays():
+    #Delays.wait(2)
+    #c = Screen.get_pixel_color((32,32))
+    #z1 = Delays.wait_for_color((32,32), c)
+    #z2 = Delays.wait_for_color((32,32), (0,0,0))
+    #c = DelayConfig()
+    #c.threshold = .95
+    #f = '/home/michaelhalpin/PycharmProjects/SimpleRPA/Folder.png'
+    #z1 = Delays.wait_for_image((0,0), f, c)
+    #Delays.wait_for_change((0,0,100,100))
+    print("")
+
+test_mouse()
 #test_keyboard()
-test_screen()
+#test_screen()
+#test_delays()

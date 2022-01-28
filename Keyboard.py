@@ -21,6 +21,8 @@
 """
 # endregion
 import sys
+import time
+
 import _Platform_Convergence
 from multipledispatch import dispatch
 
@@ -220,13 +222,19 @@ class Keys:
 # endregion
 
 
+# noinspection GrazieInspection
 class KeyboardConfig:
     """
     Instances contain the configuration settings for how a keyboard operation should be performed.
+    :prop log_screenshot: If true the method takes a screenshot after the action.
+    :prop interval: The time to wait between presses.
+    :prop action_duration: The amount of time to take to perform the operation.
+    :prop pause_after: The amount of time to pause after the operation completes.
     """
-    log_screenshot = False # If true the method takes a screenshot after the action.
-    interval = 0.0         # The time to wait between presses.
-    action_duration = 0.0  # The amount of time to take to perform the operation.
+    log_screenshot = False
+    interval = 0.0
+    action_duration = 0.0
+    pause_after = 0
 
 
 class Keyboard:
@@ -248,6 +256,8 @@ class Keyboard:
 
         _Platform_Convergence.press(key, presses, config.interval, config.log_screenshot, config.action_duration)
 
+        Keyboard._pause(config.pause_after)
+
     @staticmethod
     @dispatch(str, str)
     def press(key, command_key, presses=1, config=None):
@@ -266,6 +276,8 @@ class Keyboard:
         Keyboard.__down(command_key)
         _Platform_Convergence.press(key, presses, config.interval, config.log_screenshot, config.action_duration)
         Keyboard.__up(command_key)
+
+        Keyboard._pause(config.pause_after)
 
     @staticmethod
     @dispatch(str, tuple)
@@ -286,6 +298,8 @@ class Keyboard:
         _Platform_Convergence.press(key, presses, config.interval, config.log_screenshot, config.action_duration)
         Keyboard._up(command_keys)
 
+        Keyboard._pause(config.pause_after)
+
     @staticmethod
     @dispatch(str)
     def type(text, config=None):
@@ -300,6 +314,8 @@ class Keyboard:
             config = KeyboardConfig()
 
         _Platform_Convergence.typewrite(text, config.interval, config.log_screenshot, config.action_duration)
+
+        Keyboard._pause(config.pause_after)
 
     @staticmethod
     @dispatch(str, str)
@@ -319,6 +335,8 @@ class Keyboard:
         _Platform_Convergence.typewrite(text, config.interval, config.log_screenshot, config.action_duration)
         Keyboard.__up(command_key)
 
+        Keyboard._pause(config.pause_after)
+
     @staticmethod
     @dispatch(str, tuple)
     def type(text, command_keys, config=None):
@@ -336,9 +354,16 @@ class Keyboard:
         Keyboard._down(command_keys)
         _Platform_Convergence.typewrite(text, config.interval, config.log_screenshot, config.action_duration)
         Keyboard._up(command_keys)
+
+        Keyboard._pause(config.pause_after)
     # endregion
 
     # region PROTECTED METHODS
+    @staticmethod
+    def _pause(pause_after):
+        if pause_after > 0:
+            time.sleep(pause_after)
+
     @staticmethod
     def _down(command_keys):
         """

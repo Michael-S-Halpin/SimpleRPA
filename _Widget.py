@@ -93,6 +93,12 @@ class Widget (Thread):
         widget = Widget(rect, length)
         widget.start()
 
+    @staticmethod
+    def get_screen_resolution():
+        screen = Tk()
+        screen.withdraw()
+        return screen.winfo_screenwidth(), screen.winfo_screenheight()
+
 
 def _widget(rect, duration):
     """

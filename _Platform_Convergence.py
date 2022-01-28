@@ -35,6 +35,9 @@ import sys
 import time
 from contextlib import contextmanager
 
+from Screen import Screen
+from _Widget import Widget
+
 collectionsSequence = collections.abc.Sequence  # type: ignore
 version = "1.0"
 
@@ -793,7 +796,8 @@ def _log_screenshot(log_screenshot, func_name, func_args, folder="."):
         os.unlink(os.path.join(folder, G_LOG_SCREENSHOTS_FILENAMES[0]))
         del G_LOG_SCREENSHOTS_FILENAMES[0]
 
-    screenshot(filepath)
+    pt = Widget.get_screen_resolution()
+    Screen.capture_to_file((0, 0, pt[0], pt[1]), filepath)
     G_LOG_SCREENSHOTS_FILENAMES.append(filename)
 
 

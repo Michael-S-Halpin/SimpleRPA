@@ -23,6 +23,7 @@
 import cv2
 import numpy as np
 import time
+import _Platform_Convergence
 from _Widget import Widget
 from PIL import ImageGrab
 from tkinter import *
@@ -32,6 +33,10 @@ from tkinter import *
 class ScreenConfig:
     """
     Instances contain the configuration settings for how a Screen operation should be performed.
+    :prop use_widgets: If true displays the field highlighting widget during operation.
+    :prop widget_duration: How long to display the widget on the screen.
+    :prop log_screenshot: If true the method takes a screenshot after the action.
+    :prop pause_after: How many seconds to pause after the operation ahs been performed.
     """
     use_widgets = False     # If true displays the field highlighting widget during operation.
     widget_duration = 0.0   # How long to display the widget on the screen.
@@ -53,6 +58,10 @@ class Screen:
         pixel = image.getpixel((0, 0))
         Screen._handle_widget_pt(pt, config)
 
+        # noinspection PyProtectedMember
+        _Platform_Convergence._log_screenshot(config.log_screenshot, "get_pixel_color", "%s,%s" % pt, folder=".")
+        Screen._pause(config.pause_after)
+
         return pixel
 
     @staticmethod
@@ -66,6 +75,10 @@ class Screen:
 
         known_colors = KnownColors.get_known_colors()
         Screen._handle_widget_pt(pt, config)
+
+        # noinspection PyProtectedMember
+        _Platform_Convergence._log_screenshot(config.log_screenshot, "get_known_color", "%s,%s" % pt, folder=".")
+        Screen._pause(config.pause_after)
 
         return Screen._get_color(pt, known_colors)
 
@@ -81,6 +94,10 @@ class Screen:
         console_colors = KnownColors.get_console_colors()
         Screen._handle_widget_pt(pt, config)
 
+        # noinspection PyProtectedMember
+        _Platform_Convergence._log_screenshot(config.log_screenshot, "get_console_color", "%s,%s" % pt, folder=".")
+        Screen._pause(config.pause_after)
+
         return Screen._get_color(pt, console_colors)
 
     @staticmethod
@@ -95,7 +112,10 @@ class Screen:
         image = ImageGrab.grab(bbox=(rct[0], rct[1], rct[2], rct[3]), all_screens=True)
         Screen._handle_widget_rct(rct, config)
 
-        return image
+        Screen._pause(config.pause_after)
+
+        # noinspection PyTypeChecker
+        return np.array(image)
 
     @staticmethod
     def capture_to_file(rct, file, config=None):
@@ -108,9 +128,11 @@ class Screen:
         """
 
         image = Screen.capture(rct)
-        image.save(file)
-        image.close()
+        img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        cv2.imwrite(file, img)
         Screen._handle_widget_rct(rct, config)
+
+        Screen._pause(config.pause_after)
 
         return
 
@@ -158,8 +180,9 @@ class Screen:
             if config.use_widgets:
                 Widget.show_widget_rect(rect, config.widget_duration)
 
-        if config.pause_after > 0:
-            time.sleep(config.pause_after)
+        # noinspection PyProtectedMember
+        _Platform_Convergence._log_screenshot(config.log_screenshot, "get_console_color", "%s" % threshold, folder=".")
+        Screen._pause(config.pause_after)
 
         return lst
 
@@ -243,6 +266,30 @@ class Screen:
 
         if config.pause_after > 0:
             time.sleep(config.pause_after)
+
+    @staticmethod
+    def _compare_image(img1, img2):
+        h1 = cv2.calcHist([img1], [0], None, [256], [0, 256])
+        h2 = cv2.calcHist([img2], [0], None, [256], [0, 256])
+
+        hist_diff = cv2.compareHist(h1, h2, cv2.HISTCMP_BHATTACHARYYA)
+        probability_match = \
+            cv2.matchTemplate(h1, h2, cv2.TM_CCOEFF_NORMED)[0][0]
+        diff = 1 - probability_match
+
+        # taking only 10% of histogram diff, since it's less accurate than template method
+        image_diff = (hist_diff / 10) + diff
+
+        if image_diff > 1:
+            image_diff = 1
+        threshold = 1 - image_diff
+
+        return threshold
+
+    @staticmethod
+    def _pause(pause_after):
+        if pause_after > 0:
+            time.sleep(pause_after)
 
 
 class Color:

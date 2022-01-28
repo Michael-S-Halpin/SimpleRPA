@@ -74,19 +74,27 @@ class Tweening:
     IN_OUT_BOUNCE = _Platform_Convergence.easeInOutBounce
 
 
+# noinspection GrazieInspection
 class MouseConfig:
     """
     Instances contain the configuration settings for how a mouse operation should be performed.
+    :prop use_widgets: If true displays the field highlighting widget during operation.
+    :prop widget_duration: How long to display the widget on the screen.
+    :prop log_screenshot: If true the method takes a screenshot after the action.
+    :prop tween: How you would like to tween the mouse.
+    :prop action_duration: The amount of time to take to perform the operation.
+    :prop pause_after: How many seconds to pause after the operation ahs been performed.
     """
-    use_widgets = False  # If true displays the field highlighting widget during operation.
-    widget_duration = 0.0  # How long to display the widget on the screen.
-    log_screenshot = False  # If true the method takes a screenshot after the action.
-    tween = Tweening.LINEAR  # How you would like to tween the mouse.
-    action_duration = 0.0  # The amount of time to take to perform the operation.
-    pause_after = 0.0  # How many seconds to pause after the operation ahs been performed.
+    use_widgets = False  #
+    widget_duration = 0.0  #
+    log_screenshot = False  #
+    tween = Tweening.LINEAR  #
+    action_duration = 0.0  #
+    pause_after = 0.0  #
 
 
 # METHODS
+# noinspection GrazieInspection
 class Mouse:
     @staticmethod
     def move(pt, config=None):
