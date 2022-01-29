@@ -4,8 +4,6 @@ from Screen import *
 from Mouse import *
 from Keyboard import *
 
-#TODO: Convert image files to a json format that includes a configuration object.
-#TODO: Make constructor in platform convergence determine which library is loaded per instance.
 
 # noinspection PyMethodMayBeStatic
 class Application():
@@ -20,8 +18,11 @@ class Application():
         if index is None or index == '':
             return self
 
-        pt = Application._get_center(Screen.find_image(index))
-        Mouse.click(pt)
+        filename = index['filename']
+
+        config = MouseConfig(index['config'])
+        pt = Application._get_center(Screen.find_image(filename))
+        Mouse.click(pt, config=config)
         return self
 
     def __getattribute__(self, attr_name):
@@ -34,8 +35,9 @@ class Application():
 
     def menu_select(self, paths):
         for path in paths:
-            pt = Application._get_center(Screen.find_image(path))
-            Mouse.click(pt)
+            pt = Application._get_center(Screen.find_image(path['filename']))
+            config = MouseConfig(path['config'])
+            Mouse.click(pt, config=config)
             sleep(.2)
 
     def click(self):

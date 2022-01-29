@@ -5,8 +5,7 @@ from Keyboard import *
 from Mouse import *
 from Screen import *
 from Delays import *
-import _Platform_Convergence
-
+from Window import *
 
 def test_mouse():
     #mc = MouseConfig()
@@ -58,22 +57,25 @@ def test_delays():
     #Delays.wait_for_change((0,0,100,100))
     print("")
 
+def test_gui():
+    f = open('gedit.json')
+    jsn = json.load(f)
+    header = jsn["header"]
+    open_btn = jsn["open"]
+    other_documents = jsn["other_documents"]
+    open_files = jsn["open_files"]
+    cancel = jsn["cancel"]
+
+    # _Gui_Win.app
+    app = Window()
+    app.start("gedit")
+    app[header].menu_select([open_btn, other_documents])
+    app[open_files][cancel].click()
+    app[header][None].type_keys("SimpleRPA Works!", with_spaces=True)
+    print()
+
 #test_mouse()
 #test_keyboard()
 #test_screen()
 #test_delays()
-
-#f = open('test.json')
-#z = json.load(f)
-#q = z['test']
-#r = z['data']
-#print()
-
-#_Gui_Win.app
-z = _Platform_Convergence.test()
-z.start("gedit")
-q = ["Open.png", "Other.png"]
-z["Header.png"].menu_select(q)
-z["OpenFiles.png"]["Cancel.png"].click()
-z["Header.png"][None].type_keys("pywinauto Works!", with_spaces = True)
-print()
+test_gui()

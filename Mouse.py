@@ -86,12 +86,84 @@ class MouseConfig:
     :prop action_duration: The amount of time to take to perform the operation.
     :prop pause_after: How many seconds to pause after the operation ahs been performed.
     """
-    use_widgets = False  #
-    widget_duration = 0.0  #
-    log_screenshot = False  #
-    tween = Tweening.LINEAR  #
-    action_duration = 0.0  #
-    pause_after = 0.0  #
+    def __init__(self, o=None):
+
+        if o is not None:
+            self.use_widgets = o['use_widgets']
+            self.widget_duration = o['widget_duration']
+            self.log_screenshot = o['log_screenshot']
+            self.action_duration = o['action_duration']
+            self.pause_after = o['pause_after']
+            tween = str.upper(o['tween'])
+            if tween == "IN_QUAD":
+                self.tween = Tweening.IN_QUAD
+            elif tween == "OUT_QUAD":
+                self.tween = Tweening.OUT_QUAD
+            elif tween == "IN_OUT_QUAD":
+                self.tween = Tweening.IN_OUT_QUAD
+            elif tween == "IN_CUBIC":
+                self.tween = Tweening.IN_CUBIC
+            elif tween == "OUT_CUBIC":
+                self.tween = Tweening.OUT_CUBIC
+            elif tween == "IN_OUT_CUBIC":
+                self.tween = Tweening.IN_OUT_CUBIC
+            elif tween == "IN_QUART":
+                self.tween = Tweening.IN_QUART
+            elif tween == "OUT_QUART":
+                self.tween = Tweening.OUT_QUART
+            elif tween == "IN_OUT_QUART":
+                self.tween = Tweening.IN_OUT_QUART
+            elif tween == "IN_QUINT":
+                self.tween = Tweening.IN_QUINT
+            elif tween == "OUT_QUINT":
+                self.tween = Tweening.OUT_QUINT
+            elif tween == "IN_OUT_QUINT":
+                self.tween = Tweening.IN_OUT_QUINT
+            elif tween == "IN_SINE":
+                self.tween = Tweening.IN_SINE
+            elif tween == "OUT_SINE":
+                self.tween = Tweening.OUT_SINE
+            elif tween == "IN_OUT_SINE":
+                self.tween = Tweening.IN_OUT_SINE
+            elif tween == "IN_EXPO":
+                self.tween = Tweening.IN_EXPO
+            elif tween == "OUT_EXPO":
+                self.tween = Tweening.OUT_EXPO
+            elif tween == "IN_OUT_EXPO":
+                self.tween = Tweening.IN_OUT_EXPO
+            elif tween == "IN_CIRC":
+                self.tween = Tweening.IN_CIRC
+            elif tween == "OUT_CIRC":
+                self.tween = Tweening.OUT_CIRC
+            elif tween == "IN_OUT_CIRC":
+                self.tween = Tweening.IN_OUT_CIRC
+            elif tween == "IN_ELASTIC":
+                self.tween = Tweening.IN_ELASTIC
+            elif tween == "OUT_ELASTIC":
+                self.tween = Tweening.OUT_ELASTIC
+            elif tween == "IN_OUT_ELASTIC":
+                self.tween = Tweening.IN_OUT_ELASTIC
+            elif tween == "IN_BACK":
+                self.tween = Tweening.IN_BACK
+            elif tween == "OUT_BACK":
+                self.tween = Tweening.OUT_BACK
+            elif tween == "IN_OUT_BACK":
+                self.tween = Tweening.IN_OUT_BACK
+            elif tween == "IN_BOUNCE":
+                self.tween = Tweening.IN_BOUNCE
+            elif tween == "OUT_BOUNCE":
+                self.tween = Tweening.OUT_BOUNCE
+            elif tween == "IN_OUT_BOUNCE":
+                self.tween = Tweening.IN_OUT_BOUNCE
+            else:
+                self.tween = Tweening.LINEAR
+
+    use_widgets = False
+    widget_duration = 0.0
+    log_screenshot = False
+    tween = Tweening.LINEAR
+    action_duration = 0.0
+    pause_after = 0.0
 
 
 # METHODS
@@ -240,6 +312,6 @@ class Mouse:
             if pt is None:
                 pt = Mouse.position()
 
-            Widget.show_widget_pt(pt, config.duration)
+            Widget.show_widget_pt(pt, config.widget_duration)
 
         return x, y, config

@@ -458,15 +458,12 @@ QWERTZ = r"""=1234567890/0qwertzuiop89-asdfghjkl,\yxcvbnm,.7+!@#$%^&*()?)QWERTZU
 if sys.platform == "darwin":
     # noinspection PyPep8Naming
     import _Rpa_OSX as platform_module
-    import _Gui_Unix as gui
 elif sys.platform == "win32":
     # noinspection PyPep8Naming
     import _Rpa_Win as platform_module
-    import _Gui_Win as gui
 elif platform.system() == "Linux":
     # noinspection PyPep8Naming
     import _Rpa_Linux as platform_module
-    import _Gui_Unix as gui
 else:
     raise NotImplementedError("Your platform (%s) is not supported by SimpleRPA." % (platform.system()))
 # endregion
@@ -1497,25 +1494,6 @@ def _run_command_list(command_list, _ss_count):
                 _run_command_list(command_list[i + 2], _ss_count)
             i += 2
         i += 1
-# endregion
-
-
-# region DESKTOP GUI APP CLASS
-class Window:
-    app = None
-
-    def __iter__(self):
-        """Raise to avoid infinite loops"""
-        raise NotImplementedError("Object is not iterable, try to use .windows()")
-
-    def __getitem__(self, index):
-        return self.app[index]
-
-    def __getattribute__(self, attr_name):
-        return object.__getattribute__(self, attr_name)
-
-    def start(self, path):
-        self.app = gui.Application().start(path)
 # endregion
 
 

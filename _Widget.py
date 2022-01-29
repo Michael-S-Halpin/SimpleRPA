@@ -87,7 +87,7 @@ class Widget (Thread):
         :return: void
         """
 
-        length = duration - 0.1
+        length = duration - 0.2
         if length < 0:
             length = 0
         widget = Widget(rect, length)
