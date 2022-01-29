@@ -20,6 +20,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
 # endregion
+import pytweening
 import _Platform_Convergence
 from _Widget import Widget
 
@@ -41,37 +42,37 @@ class Tweening:
     """
     An enumerated list of all the different ways to tween the mouse.
     """
-    LINEAR = _Platform_Convergence.linear
-    IN_QUAD = _Platform_Convergence.easeInQuad
-    OUT_QUAD = _Platform_Convergence.easeOutQuad
-    IN_OUT_QUAD = _Platform_Convergence.easeInOutQuad
-    IN_CUBIC = _Platform_Convergence.easeInCubic
-    OUT_CUBIC = _Platform_Convergence.easeInOutQuad
-    IN_OUT_CUBIC = _Platform_Convergence.easeInOutCubic
-    IN_QUART = _Platform_Convergence.easeInQuart
-    OUT_QUART = _Platform_Convergence.easeOutQuart
-    IN_OUT_QUART = _Platform_Convergence.easeInOutQuart
-    IN_QUINT = _Platform_Convergence.easeInQuint
-    OUT_QUINT = _Platform_Convergence.easeOutQuint
-    IN_OUT_QUINT = _Platform_Convergence.easeInOutQuint
-    IN_SINE = _Platform_Convergence.easeInSine
-    OUT_SINE = _Platform_Convergence.easeOutSine
-    IN_OUT_SINE = _Platform_Convergence.easeInOutSine
-    IN_EXPO = _Platform_Convergence.easeInExpo
-    OUT_EXPO = _Platform_Convergence.easeOutExpo
-    IN_OUT_EXPO = _Platform_Convergence.easeInOutExpo
-    IN_CIRC = _Platform_Convergence.easeInCirc
-    OUT_CIRC = _Platform_Convergence.easeOutCirc
-    IN_OUT_CIRC = _Platform_Convergence.easeInOutCirc
-    IN_ELASTIC = _Platform_Convergence.easeInElastic
-    OUT_ELASTIC = _Platform_Convergence.easeOutElastic
-    IN_OUT_ELASTIC = _Platform_Convergence.easeInOutElastic
-    IN_BACK = _Platform_Convergence.easeInBack
-    OUT_BACK = _Platform_Convergence.easeOutBack
-    IN_OUT_BACK = _Platform_Convergence.easeInOutBack
-    IN_BOUNCE = _Platform_Convergence.easeInBounce
-    OUT_BOUNCE = _Platform_Convergence.easeOutBounce
-    IN_OUT_BOUNCE = _Platform_Convergence.easeInOutBounce
+    LINEAR = pytweening.linear
+    IN_QUAD = pytweening.easeInQuad
+    OUT_QUAD = pytweening.easeOutQuad
+    IN_OUT_QUAD = pytweening.easeInOutQuad
+    IN_CUBIC = pytweening.easeInCubic
+    OUT_CUBIC = pytweening.easeInOutQuad
+    IN_OUT_CUBIC = pytweening.easeInOutCubic
+    IN_QUART = pytweening.easeInQuart
+    OUT_QUART = pytweening.easeOutQuart
+    IN_OUT_QUART = pytweening.easeInOutQuart
+    IN_QUINT = pytweening.easeInQuint
+    OUT_QUINT = pytweening.easeOutQuint
+    IN_OUT_QUINT = pytweening.easeInOutQuint
+    IN_SINE = pytweening.easeInSine
+    OUT_SINE = pytweening.easeOutSine
+    IN_OUT_SINE = pytweening.easeInOutSine
+    IN_EXPO = pytweening.easeInExpo
+    OUT_EXPO = pytweening.easeOutExpo
+    IN_OUT_EXPO = pytweening.easeInOutExpo
+    IN_CIRC = pytweening.easeInCirc
+    OUT_CIRC = pytweening.easeOutCirc
+    IN_OUT_CIRC = pytweening.easeInOutCirc
+    IN_ELASTIC = pytweening.easeInElastic
+    OUT_ELASTIC = pytweening.easeOutElastic
+    IN_OUT_ELASTIC = pytweening.easeInOutElastic
+    IN_BACK = pytweening.easeInBack
+    OUT_BACK = pytweening.easeOutBack
+    IN_OUT_BACK = pytweening.easeInOutBack
+    IN_BOUNCE = pytweening.easeInBounce
+    OUT_BOUNCE = pytweening.easeOutBounce
+    IN_OUT_BOUNCE = pytweening.easeInOutBounce
 
 
 # noinspection GrazieInspection

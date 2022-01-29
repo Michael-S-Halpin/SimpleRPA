@@ -72,94 +72,6 @@ class ImageNotFoundException(SimpleRPAException):
 # endregion
 
 
-# region IMPORT TWEANING
-try:
-    from pytweening import (
-        easeInQuad,
-        easeOutQuad,
-        easeInOutQuad,
-        easeInCubic,
-        easeOutCubic,
-        easeInOutCubic,
-        easeInQuart,
-        easeOutQuart,
-        easeInOutQuart,
-        easeInQuint,
-        easeOutQuint,
-        easeInOutQuint,
-        easeInSine,
-        easeOutSine,
-        easeInOutSine,
-        easeInExpo,
-        easeOutExpo,
-        easeInOutExpo,
-        easeInCirc,
-        easeOutCirc,
-        easeInOutCirc,
-        easeInElastic,
-        easeOutElastic,
-        easeInOutElastic,
-        easeInBack,
-        easeOutBack,
-        easeInOutBack,
-        easeInBounce,
-        easeOutBounce,
-        easeInOutBounce,
-    )
-
-    # getLine is not needed.
-    # getPointOnLine has been redefined in this file, to avoid dependency on pytweening.
-    # linear has also been redefined in this file.
-except ImportError:
-
-    # noinspection PyUnusedLocal
-    def _could_not_import_py_tweening(*unused_args, **unused_kwargs):
-        """
-        This function raises ``SimpleRPAException``. It's used for the PyTweening function names if the PyTweening
-        module failed to be imported.
-        :return:
-        """
-        raise SimpleRPAException(
-            "SimpleRPA was unable to import pytweening. Please install this module to enable the function you tried "
-            "to call. "
-        )
-
-
-    # noinspection DuplicatedCode
-    easeInQuad = _could_not_import_py_tweening
-    easeOutQuad = _could_not_import_py_tweening
-    easeInOutQuad = _could_not_import_py_tweening
-    easeInCubic = _could_not_import_py_tweening
-    easeOutCubic = _could_not_import_py_tweening
-    easeInOutCubic = _could_not_import_py_tweening
-    easeInQuart = _could_not_import_py_tweening
-    easeOutQuart = _could_not_import_py_tweening
-    easeInOutQuart = _could_not_import_py_tweening
-    easeInQuint = _could_not_import_py_tweening
-    easeOutQuint = _could_not_import_py_tweening
-    easeInOutQuint = _could_not_import_py_tweening
-    easeInSine = _could_not_import_py_tweening
-    easeOutSine = _could_not_import_py_tweening
-    easeInOutSine = _could_not_import_py_tweening
-    # noinspection DuplicatedCode
-    easeInExpo = _could_not_import_py_tweening
-    easeOutExpo = _could_not_import_py_tweening
-    easeInOutExpo = _could_not_import_py_tweening
-    easeInCirc = _could_not_import_py_tweening
-    easeOutCirc = _could_not_import_py_tweening
-    easeInOutCirc = _could_not_import_py_tweening
-    easeInElastic = _could_not_import_py_tweening
-    easeOutElastic = _could_not_import_py_tweening
-    easeInOutElastic = _could_not_import_py_tweening
-    easeInBack = _could_not_import_py_tweening
-    easeOutBack = _could_not_import_py_tweening
-    easeInOutBack = _could_not_import_py_tweening
-    easeInBounce = _could_not_import_py_tweening
-    easeOutBounce = _could_not_import_py_tweening
-    easeInOutBounce = _could_not_import_py_tweening
-# endregion
-
-
 def raise_simple_rpa_image_not_found_exception(wrapped_function):
     """
     A decorator that wraps PyScreeze locate*() functions so that the SimpleRPA user sees them raise SimpleRPA's
@@ -546,6 +458,7 @@ QWERTZ = r"""=1234567890/0qwertzuiop89-asdfghjkl,\yxcvbnm,.7+!@#$%^&*()?)QWERTZU
 if sys.platform == "darwin":
     # noinspection PyPep8Naming
     import _Rpa_OSX as platform_module
+    import _Gui_Unix as gui
 elif sys.platform == "win32":
     # noinspection PyPep8Naming
     import _Rpa_Win as platform_module
@@ -553,6 +466,7 @@ elif sys.platform == "win32":
 elif platform.system() == "Linux":
     # noinspection PyPep8Naming
     import _Rpa_Linux as platform_module
+    import _Gui_Unix as gui
 else:
     raise NotImplementedError("Your platform (%s) is not supported by SimpleRPA." % (platform.system()))
 # endregion
@@ -1586,7 +1500,8 @@ def _run_command_list(command_list, _ss_count):
 # endregion
 
 
-class test:
+# region DESKTOP GUI APP CLASS
+class Window:
     app = None
 
     def __iter__(self):
@@ -1601,6 +1516,7 @@ class test:
 
     def start(self, path):
         self.app = gui.Application().start(path)
+# endregion
 
 
 # Add the bottom left, top right, and bottom right corners to FAILSAFE_POINTS.

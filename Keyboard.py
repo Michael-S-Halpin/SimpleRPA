@@ -302,7 +302,7 @@ class Keyboard:
 
     @staticmethod
     @dispatch(str)
-    def type(text, config=None):
+    def type_keys(text, config=None):
         """
         Types the specified text.
         :param text: The text to type.
@@ -319,7 +319,7 @@ class Keyboard:
 
     @staticmethod
     @dispatch(str, str)
-    def type(text, command_key, config=None):
+    def type_keys(text, command_key, config=None):
         """
         Types the specified text.
         :param text: The text to type.
@@ -339,7 +339,7 @@ class Keyboard:
 
     @staticmethod
     @dispatch(str, tuple)
-    def type(text, command_keys, config=None):
+    def type_keys(text, command_keys, config=None):
         """
         Types the specified text.
         :param text: The text to type.

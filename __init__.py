@@ -71,8 +71,9 @@ def test_delays():
 
 #_Gui_Win.app
 z = _Platform_Convergence.test()
-z.start("notepad.exe")
-z["UntitledNotepad"].menu_select("Help->About Notepad")
-z["AboutNotepad"]["OK"].click()
-z["UntitledNotepad"]["Edit"].type_keys("pywinauto Works!", with_spaces = True)
+z.start("gedit")
+q = ["Open.png", "Other.png"]
+z["Header.png"].menu_select(q)
+z["OpenFiles.png"]["Cancel.png"].click()
+z["Header.png"][None].type_keys("pywinauto Works!", with_spaces = True)
 print()
