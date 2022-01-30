@@ -23,7 +23,8 @@
 import cv2
 import numpy as np
 import time
-import _Platform_Convergence
+
+import _Convergence
 from _Widget import Widget
 from PIL import ImageGrab
 from tkinter import *
@@ -37,10 +38,10 @@ class ScreenConfig:
     :prop log_screenshot: If true the method takes a screenshot after the action.
     :prop pause_after: How many seconds to pause after the operation ahs been performed.
     """
-    use_widgets = False     # If true displays the field highlighting widget during operation.
-    widget_duration = 0.0   # How long to display the widget on the screen.
-    log_screenshot = False  # If true the method takes a screenshot after the action.
-    pause_after = 0.0       # How many seconds to pause after the operation ahs been performed.
+    use_widgets = False
+    widget_duration = 0.0
+    log_screenshot = False
+    pause_after = 0.0
 
 
 class Screen:
@@ -61,8 +62,8 @@ class Screen:
         Screen._handle_widget_pt(pt, config)
 
         # noinspection PyProtectedMember
-        _Platform_Convergence._log_screenshot(config.log_screenshot, "get_pixel_color", "%s,%s" % pt, folder=".")
-        Screen._pause(config.pause_after)
+        _Convergence._log_screenshot(config.log_screenshot, "get_pixel_color", "%s,%s" % pt, folder=".")
+        Screen.wait(config.pause_after)
 
         return pixel
 
@@ -82,8 +83,8 @@ class Screen:
         Screen._handle_widget_pt(pt, config)
 
         # noinspection PyProtectedMember
-        _Platform_Convergence._log_screenshot(config.log_screenshot, "get_known_color", "%s,%s" % pt, folder=".")
-        Screen._pause(config.pause_after)
+        _Convergence._log_screenshot(config.log_screenshot, "get_known_color", "%s,%s" % pt, folder=".")
+        Screen.wait(config.pause_after)
 
         return Screen._get_color(pt, known_colors)
 
@@ -103,8 +104,8 @@ class Screen:
         Screen._handle_widget_pt(pt, config)
 
         # noinspection PyProtectedMember
-        _Platform_Convergence._log_screenshot(config.log_screenshot, "get_console_color", "%s,%s" % pt, folder=".")
-        Screen._pause(config.pause_after)
+        _Convergence._log_screenshot(config.log_screenshot, "get_console_color", "%s,%s" % pt, folder=".")
+        Screen.wait(config.pause_after)
 
         return Screen._get_color(pt, console_colors)
 
@@ -123,7 +124,7 @@ class Screen:
         image = ImageGrab.grab(bbox=(rct[0], rct[1], rct[2], rct[3]), all_screens=True)
         Screen._handle_widget_rct(rct, config)
 
-        Screen._pause(config.pause_after)
+        Screen.wait(config.pause_after)
 
         # noinspection PyTypeChecker
         return np.array(image)
@@ -146,7 +147,7 @@ class Screen:
         cv2.imwrite(file, img)
         Screen._handle_widget_rct(rct, config)
 
-        Screen._pause(config.pause_after)
+        Screen.wait(config.pause_after)
 
         return
 
@@ -195,8 +196,8 @@ class Screen:
                 Widget.show_widget_rect(rect, config.widget_duration)
 
         # noinspection PyProtectedMember
-        _Platform_Convergence._log_screenshot(config.log_screenshot, "get_console_color", "%s" % threshold, folder=".")
-        Screen._pause(config.pause_after)
+        _Convergence._log_screenshot(config.log_screenshot, "get_console_color", "%s" % threshold, folder=".")
+        Screen.wait(config.pause_after)
 
         return lst
 
@@ -283,9 +284,6 @@ class Screen:
 
     @staticmethod
     def _compare_image(img1, img2):
-        g1 = gray = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
-        g2 = gray = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
-
         h1 = cv2.calcHist([img1], [0], None, [256], [0, 256])
         h2 = cv2.calcHist([img2], [0], None, [256], [0, 256])
 
@@ -303,10 +301,15 @@ class Screen:
 
         return threshold
 
+
     @staticmethod
-    def _pause(pause_after):
-        if pause_after > 0:
-            time.sleep(pause_after)
+    def wait(seconds):
+        """
+        Waits for the specified number of seconds.
+        :param seconds: The amount of time to wait in seconds.
+        :return: None
+        """
+        time.sleep(seconds)
 
 
 class Color:

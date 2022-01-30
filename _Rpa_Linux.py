@@ -25,11 +25,11 @@
 # endregion
 # NOTE - It is a known issue that the keyboard-related functions don't work on Ubuntu VMs in Virtualbox.
 
-import _Platform_Convergence
+import _Convergence
 import sys
 import os
 import Xlib.XK
-from _Platform_Convergence import LEFT, MIDDLE, RIGHT
+from _Convergence import LEFT, MIDDLE, RIGHT
 from Xlib.display import Display
 from Xlib import X
 from Xlib.ext.xtest import fake_input
@@ -144,7 +144,7 @@ def _key_down(key):
         _display.sync()
         return
 
-    needs_shift = _Platform_Convergence.is_shift_character(key)
+    needs_shift = _Convergence.is_shift_character(key)
 
     if needs_shift:
         fake_input(_display, X.KeyPress, keyboardMapping['shift'])
@@ -186,7 +186,7 @@ The *KB dictionaries in SimpleRPA map a string that can be passed to keyDown(),
 keyUp(), or press() into the code used for the OS-specific keyboard function.
 They should always be lowercase, and the same keys should be used across all OSes."""
 
-keyboardMapping = dict([(key, None) for key in _Platform_Convergence.KEY_NAMES])
+keyboardMapping = dict([(key, None) for key in _Convergence.KEY_NAMES])
 keyboardMapping.update(
     {
         'backspace': _display.keysym_to_keycode(Xlib.XK.string_to_keysym('BackSpace')),

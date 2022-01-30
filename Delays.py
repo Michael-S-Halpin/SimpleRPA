@@ -1,5 +1,7 @@
-import _Platform_Convergence
-from Screen import *
+import cv2
+import time
+import _Convergence
+from Screen import Screen, ScreenConfig
 
 
 # noinspection GrazieInspection
@@ -61,7 +63,7 @@ class Delays:
                     break
 
         # noinspection PyProtectedMember
-        _Platform_Convergence._log_screenshot(config.log_screenshot, "wait_for_color",
+        _Convergence._log_screenshot(config.log_screenshot, "wait_for_color",
                                               "%s,%s:%s,%s,%s" % (pt[0], pt[1], rgb[0], rgb[1], rgb[2]), folder=".")
 
         return response
@@ -102,7 +104,7 @@ class Delays:
                 break
 
         # noinspection PyProtectedMember
-        _Platform_Convergence._log_screenshot(config.log_screenshot, "wait_for_image", "%s,%s" % pt, folder=".")
+        _Convergence._log_screenshot(config.log_screenshot, "wait_for_image", "%s,%s" % pt, folder=".")
 
         return response
 
@@ -132,6 +134,6 @@ class Delays:
                 break
 
         # noinspection PyProtectedMember
-        _Platform_Convergence._log_screenshot(config.log_screenshot, "wait_for_change", "%s,%s,%s,%s" % rct, folder=".")
+        _Convergence._log_screenshot(config.log_screenshot, "wait_for_change", "%s,%s,%s,%s" % rct, folder=".")
 
         return response

@@ -21,7 +21,7 @@
 """
 # endregion
 import pytweening
-import _Platform_Convergence
+import _Convergence
 from _Widget import Widget
 
 

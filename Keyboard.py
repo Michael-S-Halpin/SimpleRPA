@@ -23,7 +23,7 @@
 import sys
 import time
 
-import _Platform_Convergence
+import _Convergence
 from multipledispatch import dispatch
 
 # Load platform specific console color module.
@@ -254,7 +254,7 @@ class Keyboard:
         if config is None:
             config = KeyboardConfig()
 
-        _Platform_Convergence.press(key, presses, config.interval, config.log_screenshot, config.action_duration)
+        _Convergence.press(key, presses, config.interval, config.log_screenshot, config.action_duration)
 
         Keyboard._pause(config.pause_after)
 
@@ -274,7 +274,7 @@ class Keyboard:
             config = KeyboardConfig()
 
         Keyboard.__down(command_key)
-        _Platform_Convergence.press(key, presses, config.interval, config.log_screenshot, config.action_duration)
+        _Convergence.press(key, presses, config.interval, config.log_screenshot, config.action_duration)
         Keyboard.__up(command_key)
 
         Keyboard._pause(config.pause_after)
@@ -295,7 +295,7 @@ class Keyboard:
             config = KeyboardConfig()
 
         Keyboard._down(command_keys)
-        _Platform_Convergence.press(key, presses, config.interval, config.log_screenshot, config.action_duration)
+        _Convergence.press(key, presses, config.interval, config.log_screenshot, config.action_duration)
         Keyboard._up(command_keys)
 
         Keyboard._pause(config.pause_after)
@@ -313,7 +313,7 @@ class Keyboard:
         if config is None:
             config = KeyboardConfig()
 
-        _Platform_Convergence.typewrite(text, config.interval, config.log_screenshot, config.action_duration)
+        _Convergence.typewrite(text, config.interval, config.log_screenshot, config.action_duration)
 
         Keyboard._pause(config.pause_after)
 
@@ -332,7 +332,7 @@ class Keyboard:
             config = KeyboardConfig()
 
         Keyboard.__down(command_key)
-        _Platform_Convergence.typewrite(text, config.interval, config.log_screenshot, config.action_duration)
+        _Convergence.typewrite(text, config.interval, config.log_screenshot, config.action_duration)
         Keyboard.__up(command_key)
 
         Keyboard._pause(config.pause_after)
@@ -352,7 +352,7 @@ class Keyboard:
             config = KeyboardConfig()
 
         Keyboard._down(command_keys)
-        _Platform_Convergence.typewrite(text, config.interval, config.log_screenshot, config.action_duration)
+        _Convergence.typewrite(text, config.interval, config.log_screenshot, config.action_duration)
         Keyboard._up(command_keys)
 
         Keyboard._pause(config.pause_after)
@@ -392,19 +392,19 @@ class Keyboard:
         :return: void
         """
         if command_key == CKeys.ALT:
-            _Platform_Convergence.key_down(CKeys.ALT, False, True)
+            _Convergence.key_down(CKeys.ALT, False, True)
         elif command_key == CKeys.CTRL:
-            _Platform_Convergence.key_down(CKeys.CTRL, False, True)
+            _Convergence.key_down(CKeys.CTRL, False, True)
         elif command_key == CKeys.SHIFT:
-            _Platform_Convergence.key_down(CKeys.SHIFT, False, True)
+            _Convergence.key_down(CKeys.SHIFT, False, True)
         elif command_key == CKeys.WIN:
-            _Platform_Convergence.key_down(CKeys.WIN, False, True)
+            _Convergence.key_down(CKeys.WIN, False, True)
         elif command_key == CKeys.FN:
-            _Platform_Convergence.key_down(CKeys.FN, False, True)
+            _Convergence.key_down(CKeys.FN, False, True)
         elif command_key == CKeys.OPT:
-            _Platform_Convergence.key_down(CKeys.OPT, False, True)
+            _Convergence.key_down(CKeys.OPT, False, True)
         elif command_key == CKeys.CMD:
-            _Platform_Convergence.key_down(CKeys.CMD, False, True)
+            _Convergence.key_down(CKeys.CMD, False, True)
 
     @staticmethod
     def __up(command_key):
@@ -414,19 +414,19 @@ class Keyboard:
         :return: void
         """
         if command_key == CKeys.ALT:
-            _Platform_Convergence.key_up(CKeys.ALT, False, True)
+            _Convergence.key_up(CKeys.ALT, False, True)
         elif command_key == CKeys.CTRL:
-            _Platform_Convergence.key_up(CKeys.CTRL, False, True)
+            _Convergence.key_up(CKeys.CTRL, False, True)
         elif command_key == CKeys.SHIFT:
-            _Platform_Convergence.key_up(CKeys.SHIFT, False, True)
+            _Convergence.key_up(CKeys.SHIFT, False, True)
         elif command_key == CKeys.WIN:
-            _Platform_Convergence.key_up(CKeys.WIN, False, True)
+            _Convergence.key_up(CKeys.WIN, False, True)
         elif command_key == CKeys.FN:
-            _Platform_Convergence.key_up(CKeys.FN, False, True)
+            _Convergence.key_up(CKeys.FN, False, True)
         elif command_key == CKeys.OPT:
-            _Platform_Convergence.key_up(CKeys.OPT, False, True)
+            _Convergence.key_up(CKeys.OPT, False, True)
         elif command_key == CKeys.CMD:
-            _Platform_Convergence.key_up(CKeys.CMD, False, True)
+            _Convergence.key_up(CKeys.CMD, False, True)
     # endregion
 
 # class Console:

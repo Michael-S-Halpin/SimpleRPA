@@ -29,8 +29,8 @@ import time
 import sys
 # noinspection PyUnresolvedReferences
 import AppKit
-import _Platform_Convergence
-from _Platform_Convergence import LEFT, MIDDLE, RIGHT
+import _Convergence
+from _Convergence import LEFT, MIDDLE, RIGHT
 
 
 # noinspection PyBroadException

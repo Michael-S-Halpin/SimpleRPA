@@ -1,11 +1,13 @@
 import json
 
 import Delays
-from Keyboard import *
-from Mouse import *
-from Screen import *
-from Delays import *
-from Window import *
+import SimpleOcr
+from Keyboard import Keyboard
+from Mouse import Mouse
+from Screen import Screen
+from Delays import Delays
+from Window import Window
+from SimpleOcr import SimpleOcr, OcrConfig
 
 def test_mouse():
     #mc = MouseConfig()
@@ -57,6 +59,7 @@ def test_delays():
     #Delays.wait_for_change((0,0,100,100))
     print("")
 
+
 def test_gui():
     f = open('gedit.json')
     jsn = json.load(f)
@@ -74,8 +77,17 @@ def test_gui():
     app[header][None].type_keys("SimpleRPA Works!", with_spaces=True)
     print()
 
+
+def test_ocr():
+    oc = OcrConfig()
+    oc.use_widgets = True
+    oc.widget_duration = 1
+    SimpleOcr.add_font('/media/michaelhalpin/HDD/Applications/Windows/Default')
+    txt = SimpleOcr.perform_ocr('Default', (12, 683, 485, 325), oc)
+
 #test_mouse()
 #test_keyboard()
 #test_screen()
 #test_delays()
-test_gui()
+#test_gui()
+test_ocr()
