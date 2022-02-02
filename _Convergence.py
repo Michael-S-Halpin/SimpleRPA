@@ -35,7 +35,7 @@ import sys
 import time
 
 from . import Screen
-from _Widget import Widget
+from . import _Widget as Widget
 
 collectionsSequence = collections.abc.Sequence  # type: ignore
 version = "1.0"
@@ -456,13 +456,13 @@ QWERTZ = r"""=1234567890/0qwertzuiop89-asdfghjkl,\yxcvbnm,.7+!@#$%^&*()?)QWERTZU
 # region IMPORTS PLATFORM SPECIFIC RPA
 if sys.platform == "darwin":
     # noinspection PyPep8Naming
-    import _Rpa_OSX as platform_module
+    from . import _Rpa_OSX as platform_module
 elif sys.platform == "win32":
     # noinspection PyPep8Naming
-    import _Rpa_Win as platform_module
+    from . import _Rpa_Win as platform_module
 elif platform.system() == "Linux":
     # noinspection PyPep8Naming
-    import _Rpa_Linux as platform_module
+    from . import _Rpa_Linux as platform_module
 else:
     raise NotImplementedError("Your platform (%s) is not supported by SimpleRPA." % (platform.system()))
 # endregion

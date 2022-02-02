@@ -24,8 +24,8 @@ import cv2
 import numpy as np
 import time
 
-import _Convergence
-from _Widget import Widget
+from . import _Convergence
+from . import _Widget as Widget
 from PIL import ImageGrab
 from tkinter import *
 
@@ -133,26 +133,17 @@ def capture(rct, config=None):
     return np.array(image)
 
 
-def capture_to_file(rct, file, config=None):
+def save_image(image, file):
     # noinspection GrazieInspection
     """
-    Captures the area of the screen and save it to the specified file.
-    :param rct: Tuple area rectangle to capture off the screen.
+    Saves the specified image to the specified file.
+    :param image: The image to save.
     :param file: The name of the file to save the image to.
-    :param config: The configuration object that contains setting for how this action should be performed.
     :return: void
     """
 
-    if config is None:
-        config = ScreenConfig()
-
-    image = capture(rct)
     img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     cv2.imwrite(file, img)
-    _handle_widget_rct(rct, config)
-
-    wait(config.pause_after)
-
     return
 
 

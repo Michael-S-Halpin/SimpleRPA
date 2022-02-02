@@ -24,8 +24,7 @@
 """
 # endregion
 # region IMPORTS
-from _Convergence import LEFT, MIDDLE, RIGHT
-import _Convergence
+from . import _Convergence
 import ctypes
 import ctypes.wintypes
 import sys
