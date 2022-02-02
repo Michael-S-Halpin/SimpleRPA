@@ -34,6 +34,7 @@ class Widget (Thread):
     duration = 3
 
     def __init__(self, rect, duration=3):
+        # noinspection GrazieInspection
         """
         Constructs a new widget instance.
         :param rect: The area the widget should cover.
@@ -55,6 +56,7 @@ class Widget (Thread):
 
     @staticmethod
     def show_widget_pt(pt, duration):
+        # noinspection GrazieInspection
         """
         Draws a square box around a single point on the screen.
         :param pt:  The point to draw around.
@@ -80,6 +82,7 @@ class Widget (Thread):
 
     @staticmethod
     def show_widget_rect(rect, duration):
+        # noinspection GrazieInspection
         """
         Draws a rectangle around the specified area.
         :param rect: The rectangular tuple to the widget should cover.
@@ -101,6 +104,7 @@ class Widget (Thread):
 
 
 def _widget(rect, duration):
+    # noinspection GrazieInspection
     """
     Draws a rectangle around the specified area.
     :param rect: The rectangular tuple to the widget should cover.

@@ -164,7 +164,7 @@ class INPUT(ctypes.Structure):
 # They should always be lowercase, and the same keys should be used across all operating systems.
 
 
-keyboardMapping = dict([(key, None) for key in _Platform_Convergence.KEY_NAMES])
+keyboardMapping = dict([(key, None) for key in _Convergence.KEY_NAMES])
 keyboardMapping.update({
     'backspace': 0x08,  # VK_BACK
     '\b': 0x08,  # VK_BACK
@@ -307,6 +307,7 @@ for c in range(32, 128):
 
 # region KEYBOARD METHODS
 def _key_down(key):
+    # noinspection GrazieInspection
     """
     Performs a keyboard key press without the release. This will put that key in a held down state.
     :param key: The key to be pressed down.
@@ -315,7 +316,7 @@ def _key_down(key):
     if key not in keyboardMapping or keyboardMapping[key] is None:
         return
 
-    needs_shift = _Platform_Convergence.is_shift_character(key)
+    needs_shift = _Convergence.is_shift_character(key)
 
     mods, vk_code = divmod(keyboardMapping[key], 0x100)
 
@@ -332,6 +333,7 @@ def _key_down(key):
 
 
 def _key_up(key):
+    # noinspection GrazieInspection
     """
     Performs a keyboard key release (without the press down beforehand).
     :param key: The key to be released up.
@@ -340,7 +342,7 @@ def _key_up(key):
     if key not in keyboardMapping or keyboardMapping[key] is None:
         return
 
-    needs_shift = _Platform_Convergence.is_shift_character(key)
+    needs_shift = _Convergence.is_shift_character(key)
 
     mods, vk_code = divmod(keyboardMapping[key], 0x100)
 
@@ -386,6 +388,7 @@ def _position():
 
 
 def _move_to(x, y):
+    # noinspection GrazieInspection
     """
     Send the mouse move event to Windows by calling SetCursorPos() win32 function.
     :param x: The x position of the mouse event.
@@ -397,6 +400,7 @@ def _move_to(x, y):
 
 # noinspection DuplicatedCode
 def _mouse_down(x, y, button):
+    # noinspection GrazieInspection
     """
     Send the mouse down event to Windows by calling the mouse_event() win32 function.
     :param x: The x position of the mouse event.
@@ -424,6 +428,7 @@ def _mouse_down(x, y, button):
 
 # noinspection DuplicatedCode
 def _mouse_up(x, y, button):
+    # noinspection GrazieInspection
     """
     Send the mouse up event to Windows by calling the mouse_event() win32 function.
     :param x: The x position of the mouse event.
@@ -451,6 +456,7 @@ def _mouse_up(x, y, button):
 
 # noinspection DuplicatedCode
 def _click(x, y, button):
+    # noinspection GrazieInspection
     """
     Send the mouse click event to Windows by calling the mouse_event() win32 function.
     :param x: The x position of the mouse event.
@@ -477,6 +483,7 @@ def _click(x, y, button):
 
 
 def _send_mouse_event(ev, x, y, dw_data=0):
+    # noinspection GrazieInspection
     """
     The helper function that actually makes the call to the mouse_event() win32 function.
     :param ev: The win32 code for the mouse event. Use one of the MOUSEEVENTF_* constants for this argument.
@@ -494,6 +501,7 @@ def _send_mouse_event(ev, x, y, dw_data=0):
 
 
 def _scroll(clicks, x=None, y=None):
+    # noinspection GrazieInspection
     """
     Send the mouse vertical scroll event to Windows by calling the mouse_event() win32 function.
     :param clicks: The amount of scrolling to do. A positive value is the mouse wheel moving forward (scrolling up),

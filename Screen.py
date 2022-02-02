@@ -31,6 +31,7 @@ from tkinter import *
 
 
 class ScreenConfig:
+    # noinspection GrazieInspection
     """
     Instances contain the configuration settings for how a Screen operation should be performed.
     :prop use_widgets: If true displays the field highlighting widget during operation.
@@ -44,272 +45,279 @@ class ScreenConfig:
     pause_after = 0.0
 
 
-class Screen:
-    @staticmethod
-    def get_pixel_color(pt, config=None):
-        """
-        Returns the pixel color of the specified coordinate.
-        :param pt: The point to look at.
-        :param config: The configuration object that contains setting for how this action should be performed.
-        :return: Color
-        """
+def get_pixel_color(pt, config=None):
+    # noinspection GrazieInspection
+    """
+    Returns the pixel color of the specified coordinate.
+    :param pt: The point to look at.
+    :param config: The configuration object that contains setting for how this action should be performed.
+    :return: Color
+    """
 
-        if config is None:
-            config = ScreenConfig()
+    if config is None:
+        config = ScreenConfig()
 
-        image = ImageGrab.grab(bbox=(pt[0], pt[1], pt[0] + 1, pt[1] + 1))
-        pixel = image.getpixel((0, 0))
-        Screen._handle_widget_pt(pt, config)
+    image = ImageGrab.grab(bbox=(pt[0], pt[1], pt[0] + 1, pt[1] + 1))
+    pixel = image.getpixel((0, 0))
+    _handle_widget_pt(pt, config)
 
-        # noinspection PyProtectedMember
-        _Convergence._log_screenshot(config.log_screenshot, "get_pixel_color", "%s,%s" % pt, folder=".")
-        Screen.wait(config.pause_after)
+    # noinspection PyProtectedMember
+    _Convergence._log_screenshot(config.log_screenshot, "get_pixel_color", "%s,%s" % pt, folder=".")
+    wait(config.pause_after)
 
-        return pixel
+    return pixel
 
-    @staticmethod
-    def get_known_color(pt, config=None):
-        """
-        Returns the nearest known color of the specified coordinate.
-        :param pt: The point to look at.
-        :param config: The configuration object that contains setting for how this action should be performed.
-        :return: Color
-        """
 
-        if config is None:
-            config = ScreenConfig()
+def get_known_color(pt, config=None):
+    # noinspection GrazieInspection
+    """
+    Returns the nearest known color of the specified coordinate.
+    :param pt: The point to look at.
+    :param config: The configuration object that contains setting for how this action should be performed.
+    :return: Color
+    """
 
-        known_colors = KnownColors.get_known_colors()
-        Screen._handle_widget_pt(pt, config)
+    if config is None:
+        config = ScreenConfig()
 
-        # noinspection PyProtectedMember
-        _Convergence._log_screenshot(config.log_screenshot, "get_known_color", "%s,%s" % pt, folder=".")
-        Screen.wait(config.pause_after)
+    known_colors = KnownColors.get_known_colors()
+    _handle_widget_pt(pt, config)
 
-        return Screen._get_color(pt, known_colors)
+    # noinspection PyProtectedMember
+    _Convergence._log_screenshot(config.log_screenshot, "get_known_color", "%s,%s" % pt, folder=".")
+    wait(config.pause_after)
 
-    @staticmethod
-    def get_console_color(pt, config=None):
-        """
-        Returns the nearest console color of the specified coordinate.
-        :param pt: The point to look at.
-        :param config: The configuration object that contains setting for how this action should be performed.
-        :return: Color
-        """
+    return _get_color(pt, known_colors)
 
-        if config is None:
-            config = ScreenConfig()
 
-        console_colors = KnownColors.get_console_colors()
-        Screen._handle_widget_pt(pt, config)
+def get_console_color(pt, config=None):
+    # noinspection GrazieInspection
+    """
+    Returns the nearest console color of the specified coordinate.
+    :param pt: The point to look at.
+    :param config: The configuration object that contains setting for how this action should be performed.
+    :return: Color
+    """
 
-        # noinspection PyProtectedMember
-        _Convergence._log_screenshot(config.log_screenshot, "get_console_color", "%s,%s" % pt, folder=".")
-        Screen.wait(config.pause_after)
+    if config is None:
+        config = ScreenConfig()
 
-        return Screen._get_color(pt, console_colors)
+    console_colors = KnownColors.get_console_colors()
+    _handle_widget_pt(pt, config)
 
-    @staticmethod
-    def capture(rct, config=None):
-        """
-        Captures the area of the specified rectangle.
-        :param rct: Tuple area rectangle to capture off the screen.
-        :param config: The configuration object that contains setting for how this action should be performed.
-        :return: image
-        """
+    # noinspection PyProtectedMember
+    _Convergence._log_screenshot(config.log_screenshot, "get_console_color", "%s,%s" % pt, folder=".")
+    wait(config.pause_after)
 
-        if config is None:
-            config = ScreenConfig()
+    return _get_color(pt, console_colors)
 
-        image = ImageGrab.grab(bbox=(rct[0], rct[1], rct[2], rct[3]), all_screens=True)
-        Screen._handle_widget_rct(rct, config)
 
-        Screen.wait(config.pause_after)
+def capture(rct, config=None):
+    # noinspection GrazieInspection
+    """
+    Captures the area of the specified rectangle.
+    :param rct: Tuple area rectangle to capture off the screen.
+    :param config: The configuration object that contains setting for how this action should be performed.
+    :return: image
+    """
 
-        # noinspection PyTypeChecker
-        return np.array(image)
+    if config is None:
+        config = ScreenConfig()
 
-    @staticmethod
-    def capture_to_file(rct, file, config=None):
-        """
-        Captures the area of the screen and save it to the specified file.
-        :param rct: Tuple area rectangle to capture off the screen.
-        :param file: The name of the file to save the image to.
-        :param config: The configuration object that contains setting for how this action should be performed.
-        :return: void
-        """
+    image = ImageGrab.grab(bbox=(rct[0], rct[1], rct[2], rct[3]), all_screens=True)
+    _handle_widget_rct(rct, config)
 
-        if config is None:
-            config = ScreenConfig()
+    wait(config.pause_after)
 
-        image = Screen.capture(rct)
-        img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        cv2.imwrite(file, img)
-        Screen._handle_widget_rct(rct, config)
+    # noinspection PyTypeChecker
+    return np.array(image)
 
-        Screen.wait(config.pause_after)
 
-        return
+def capture_to_file(rct, file, config=None):
+    # noinspection GrazieInspection
+    """
+    Captures the area of the screen and save it to the specified file.
+    :param rct: Tuple area rectangle to capture off the screen.
+    :param file: The name of the file to save the image to.
+    :param config: The configuration object that contains setting for how this action should be performed.
+    :return: void
+    """
 
-    @staticmethod
-    def find_image(file, threshold=0.9, config=None):
-        """
-        Searches the screen to locate image matches of the specified image file.
-        :param file: The name of the file to load reference image from.
-        :param threshold: The matching threshold to use when searching.
-        :param config: The configuration object that contains setting for how this action should be performed.
-        :return: tuple(x,y,w,h)[]
-        """
+    if config is None:
+        config = ScreenConfig()
 
-        if file is None or file == '':
-            raise FileNotFoundError("The parameter 'file' must be populated.")
+    image = capture(rct)
+    img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    cv2.imwrite(file, img)
+    _handle_widget_rct(rct, config)
 
-        # Load the image file to look for.
-        img = cv2.imread(file)
+    wait(config.pause_after)
 
-        # region Get the screen width and height.
-        tkr = Tk()
-        width = tkr.winfo_screenwidth()
-        height = tkr.winfo_screenheight()
-        # endregion
+    return
 
-        # Capture the screen.
-        # noinspection PyTypeChecker
-        screen = np.array(ImageGrab.grab(bbox=(0, 0, width, height), all_screens=True))
 
-        # region Search for image file on screen and return found locations.
-        haystack = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
-        needle = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        w, h = needle.shape[::-1]
-        res = cv2.matchTemplate(haystack, needle, cv2.TM_CCOEFF_NORMED)
+def find_image(file, threshold=0.9, config=None):
+    # noinspection GrazieInspection
+    """
+    Searches the screen to locate image matches of the specified image file.
+    :param file: The name of the file to load reference image from.
+    :param threshold: The matching threshold to use when searching.
+    :param config: The configuration object that contains setting for how this action should be performed.
+    :return: tuple(x,y,w,h)[]
+    """
 
-        loc = np.where(res >= threshold)
+    if file is None or file == '':
+        raise FileNotFoundError("The parameter 'file' must be populated.")
 
-        if config is None:
-            config = ScreenConfig()
+    # Load the image file to look for.
+    img = cv2.imread(file)
 
-        lst = list()
-        for i in range(len(loc[0])):
-            rect = (loc[1][i], loc[0][i], w, h)
-            lst.append(rect)
-            if config.use_widgets:
-                Widget.show_widget_rect(rect, config.widget_duration)
+    # region Get the screen width and height.
+    tkr = Tk()
+    width = tkr.winfo_screenwidth()
+    height = tkr.winfo_screenheight()
+    # endregion
 
-        # noinspection PyProtectedMember
-        _Convergence._log_screenshot(config.log_screenshot, "get_console_color", "%s" % threshold, folder=".")
-        Screen.wait(config.pause_after)
+    # Capture the screen.
+    # noinspection PyTypeChecker
+    screen = np.array(ImageGrab.grab(bbox=(0, 0, width, height), all_screens=True))
 
-        return lst
+    # region Search for image file on screen and return found locations.
+    haystack = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
+    needle = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    w, h = needle.shape[::-1]
+    res = cv2.matchTemplate(haystack, needle, cv2.TM_CCOEFF_NORMED)
 
-    @staticmethod
-    def _get_color(pt, color_list):
-        """
-        Gets the color at the specified point on the screen.
-        :param color_list: The list of known colors to find the closest match to.
-        :return: Color
-        """
+    loc = np.where(res >= threshold)
 
-        lng = len(color_list)
-        p = Screen.get_pixel_color(pt)
-        clr = -1
-        delta = 256
-        m0 = 256
-        m1 = 256
-        m2 = 256
-        c0 = 256
-        c1 = 256
-        c2 = 256
+    if config is None:
+        config = ScreenConfig()
 
-        # region Find the closest match.
-        for i in range(0, lng):
-            c = color_list[i]
-            d0 = abs(c.r - p[0])
-            d1 = abs(c.g - p[1])
-            d2 = abs(c.b - p[2])
-            d = (d0 + d1 + d2) / 3
+    lst = list()
+    for i in range(len(loc[0])):
+        rect = (loc[1][i], loc[0][i], w, h)
+        lst.append(rect)
+        if config.use_widgets:
+            Widget.show_widget_rect(rect, config.widget_duration)
 
-            if d < delta:
+    # noinspection PyProtectedMember
+    _Convergence._log_screenshot(config.log_screenshot, "get_console_color", "%s" % threshold, folder=".")
+    wait(config.pause_after)
+
+    return lst
+
+
+def _get_color(pt, color_list):
+    # noinspection GrazieInspection
+    """
+    Gets the color at the specified point on the screen.
+    :param color_list: The list of known colors to find the closest match to.
+    :return: Color
+    """
+
+    lng = len(color_list)
+    p = get_pixel_color(pt)
+    clr = -1
+    delta = 256
+    m0 = 256
+    m1 = 256
+    m2 = 256
+    c0 = 256
+    c1 = 256
+    c2 = 256
+
+    # region Find the closest match.
+    for i in range(0, lng):
+        c = color_list[i]
+        d0 = abs(c.r - p[0])
+        d1 = abs(c.g - p[1])
+        d2 = abs(c.b - p[2])
+        d = (d0 + d1 + d2) / 3
+
+        if d < delta:
+            delta = d
+            clr = i
+            c0 = d0
+            c1 = d1
+            c2 = d2
+        elif d == delta:
+            if (c0 < m0 and (c1 < m1 or c2 < m2)) or (c1 < m1 and c2 < m2):
                 delta = d
                 clr = i
                 c0 = d0
                 c1 = d1
                 c2 = d2
-            elif d == delta:
-                if (c0 < m0 and (c1 < m1 or c2 < m2)) or (c1 < m1 and c2 < m2):
-                    delta = d
-                    clr = i
-                    c0 = d0
-                    c1 = d1
-                    c2 = d2
-        # endregion
+    # endregion
 
-        return color_list[clr]
-        # endregion
-
-    @staticmethod
-    def _handle_widget_pt(pt, config=None):
-        """
-        Draws the widget on the screen.
-        :param pt: The point to draw the widget at.
-        :param config: The configuration settings for this operation.
-        :return: void
-        """
-
-        if config is None:
-            config = ScreenConfig()
-
-        if config.use_widgets:
-            Widget.show_widget_pt(pt, config.widget_duration)
-
-        if config.pause_after > 0:
-            time.sleep(config.pause_after)
-
-    @staticmethod
-    def _handle_widget_rct(rct, config=None):
-        """
-        Draws the widget on the screen.
-        :param rct: The rectangular area of the screen to draw the widget at.
-        :param config: The configuration setting for this operation.
-        :return: void
-        """
-
-        if config is None:
-            config = ScreenConfig()
-
-        if config.use_widgets:
-            Widget.show_widget_rect(rct, config.duration)
-
-        if config.pause_after > 0:
-            time.sleep(config.pause_after)
-
-    @staticmethod
-    def _compare_image(img1, img2):
-        h1 = cv2.calcHist([img1], [0], None, [256], [0, 256])
-        h2 = cv2.calcHist([img2], [0], None, [256], [0, 256])
-
-        hist_diff = cv2.compareHist(h1, h2, cv2.HISTCMP_BHATTACHARYYA)
-        probability_match = \
-            cv2.matchTemplate(h1, h2, cv2.TM_CCOEFF_NORMED)[0][0]
-        diff = 1 - abs(probability_match)
-
-        # taking only 10% of histogram diff, since it's less accurate than template method
-        image_diff = (hist_diff / 10) + diff
-
-        if image_diff > 1:
-            image_diff = 1
-        threshold = 1 - image_diff
-
-        return threshold
+    return color_list[clr]
+    # endregion
 
 
-    @staticmethod
-    def wait(seconds):
-        """
-        Waits for the specified number of seconds.
-        :param seconds: The amount of time to wait in seconds.
-        :return: None
-        """
-        time.sleep(seconds)
+def _handle_widget_pt(pt, config=None):
+    # noinspection GrazieInspection
+    """
+    Draws the widget on the screen.
+    :param pt: The point to draw the widget at.
+    :param config: The configuration settings for this operation.
+    :return: void
+    """
+
+    if config is None:
+        config = ScreenConfig()
+
+    if config.use_widgets:
+        Widget.show_widget_pt(pt, config.widget_duration)
+
+    if config.pause_after > 0:
+        time.sleep(config.pause_after)
+
+
+def _handle_widget_rct(rct, config=None):
+    # noinspection GrazieInspection
+    """
+    Draws the widget on the screen.
+    :param rct: The rectangular area of the screen to draw the widget at.
+    :param config: The configuration setting for this operation.
+    :return: void
+    """
+
+    if config is None:
+        config = ScreenConfig()
+
+    if config.use_widgets:
+        Widget.show_widget_rect(rct, config.duration)
+
+    if config.pause_after > 0:
+        time.sleep(config.pause_after)
+
+
+def _compare_image(img1, img2):
+    h1 = cv2.calcHist([img1], [0], None, [256], [0, 256])
+    h2 = cv2.calcHist([img2], [0], None, [256], [0, 256])
+
+    hist_diff = cv2.compareHist(h1, h2, cv2.HISTCMP_BHATTACHARYYA)
+    probability_match = \
+        cv2.matchTemplate(h1, h2, cv2.TM_CCOEFF_NORMED)[0][0]
+    diff = 1 - abs(probability_match)
+
+    # taking only 10% of histogram diff, since it's less accurate than template method
+    image_diff = (hist_diff / 10) + diff
+
+    if image_diff > 1:
+        image_diff = 1
+    threshold = 1 - image_diff
+
+    return threshold
+
+
+def wait(seconds):
+    # noinspection GrazieInspection
+    """
+    Waits for the specified number of seconds.
+    :param seconds: The amount of time to wait in seconds.
+    :return: None
+    """
+    time.sleep(seconds)
 
 
 class Color:
@@ -322,6 +330,7 @@ class Color:
     name = ''
 
     def __init__(self, r, g, b, name=''):
+        # noinspection GrazieInspection
         """
         Initializes a new instance of Color class.
         :param r: The red channel value.

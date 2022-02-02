@@ -33,9 +33,8 @@ import platform
 import re
 import sys
 import time
-from contextlib import contextmanager
 
-from Screen import Screen
+from . import Screen
 from _Widget import Widget
 
 collectionsSequence = collections.abc.Sequence  # type: ignore

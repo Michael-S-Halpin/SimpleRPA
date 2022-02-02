@@ -6,3 +6,4 @@
   pip install OpenCV-Python
   pip install pytweening
   pip install tk
+  pip install pywinauto

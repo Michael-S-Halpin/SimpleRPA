@@ -237,243 +237,200 @@ class KeyboardConfig:
     pause_after = 0
 
 
-class Keyboard:
+# region PUBLIC METHODS
+@dispatch(str)
+def press(key, presses=1, config=None):
+    # noinspection GrazieInspection
+    """
+    Presses the specified key.
+    :param key: The key to press.
+    :param presses: The number of presses to make.
+    :param config: The configuration object that contains setting for how this action should be performed.
+    :return: void
+    """
 
-    # region PUBLIC METHODS
-    @staticmethod
-    @dispatch(str)
-    def press(key, presses=1, config=None):
-        """
-        Presses the specified key.
-        :param key: The key to press.
-        :param presses: The number of presses to make.
-        :param config: The configuration object that contains setting for how this action should be performed.
-        :return: void
-        """
+    if config is None:
+        config = KeyboardConfig()
 
-        if config is None:
-            config = KeyboardConfig()
+    _Convergence.press(key, presses, config.interval, config.log_screenshot, config.action_duration)
 
-        _Convergence.press(key, presses, config.interval, config.log_screenshot, config.action_duration)
+    _pause(config.pause_after)
 
-        Keyboard._pause(config.pause_after)
 
-    @staticmethod
-    @dispatch(str, str)
-    def press(key, command_key, presses=1, config=None):
-        """
-        Presses the specified key.
-        :param key: The key to press.
-        :param command_key: The command key to hold while pressing the key.
-        :param presses: The number of times to press.
-        :param config: The configuration object that contains setting for how this action should be performed.
-        :return: void
-        """
+@dispatch(str, str)
+def press(key, command_key, presses=1, config=None):
+    # noinspection GrazieInspection
+    """
+    Presses the specified key.
+    :param key: The key to press.
+    :param command_key: The command key to hold while pressing the key.
+    :param presses: The number of times to press.
+    :param config: The configuration object that contains setting for how this action should be performed.
+    :return: void
+    """
 
-        if config is None:
-            config = KeyboardConfig()
+    if config is None:
+        config = KeyboardConfig()
 
-        Keyboard.__down(command_key)
-        _Convergence.press(key, presses, config.interval, config.log_screenshot, config.action_duration)
-        Keyboard.__up(command_key)
+    __down(command_key)
+    _Convergence.press(key, presses, config.interval, config.log_screenshot, config.action_duration)
+    __up(command_key)
 
-        Keyboard._pause(config.pause_after)
+    _pause(config.pause_after)
 
-    @staticmethod
-    @dispatch(str, tuple)
-    def press(key, command_keys, presses=1, config=None):
-        """
-        Presses the specified key.
-        :param key: The key to press.
-        :param command_keys: A tuple of command keys to hold down while pressing the key.
-        :param presses: The number of times to press.
-        :param config: The configuration object that contains setting for how this action should be performed.
-        :return: void
-        """
 
-        if config is None:
-            config = KeyboardConfig()
+@dispatch(str, tuple)
+def press(key, command_keys, presses=1, config=None):
+    # noinspection GrazieInspection
+    """
+    Presses the specified key.
+    :param key: The key to press.
+    :param command_keys: A tuple of command keys to hold down while pressing the key.
+    :param presses: The number of times to press.
+    :param config: The configuration object that contains setting for how this action should be performed.
+    :return: void
+    """
 
-        Keyboard._down(command_keys)
-        _Convergence.press(key, presses, config.interval, config.log_screenshot, config.action_duration)
-        Keyboard._up(command_keys)
+    if config is None:
+        config = KeyboardConfig()
 
-        Keyboard._pause(config.pause_after)
+    _down(command_keys)
+    _Convergence.press(key, presses, config.interval, config.log_screenshot, config.action_duration)
+    _up(command_keys)
 
-    @staticmethod
-    @dispatch(str)
-    def type_keys(text, config=None):
-        """
-        Types the specified text.
-        :param text: The text to type.
-        :param config: The configuration object that contains setting for how this action should be performed.
-        :return: void
-        """
+    _pause(config.pause_after)
 
-        if config is None:
-            config = KeyboardConfig()
 
-        _Convergence.typewrite(text, config.interval, config.log_screenshot, config.action_duration)
+@dispatch(str)
+def type_keys(text, config=None):
+    # noinspection GrazieInspection
+    """
+    Types the specified text.
+    :param text: The text to type.
+    :param config: The configuration object that contains setting for how this action should be performed.
+    :return: void
+    """
 
-        Keyboard._pause(config.pause_after)
+    if config is None:
+        config = KeyboardConfig()
 
-    @staticmethod
-    @dispatch(str, str)
-    def type_keys(text, command_key, config=None):
-        """
-        Types the specified text.
-        :param text: The text to type.
-        :param command_key: The command key to hold down while pressing the key.
-        :param config: The configuration object that contains setting for how this action should be performed.
-        :return: void
-        """
+    _Convergence.typewrite(text, config.interval, config.log_screenshot, config.action_duration)
 
-        if config is None:
-            config = KeyboardConfig()
+    _pause(config.pause_after)
 
-        Keyboard.__down(command_key)
-        _Convergence.typewrite(text, config.interval, config.log_screenshot, config.action_duration)
-        Keyboard.__up(command_key)
 
-        Keyboard._pause(config.pause_after)
+@dispatch(str, str)
+def type_keys(text, command_key, config=None):
+    # noinspection GrazieInspection
+    """
+    Types the specified text.
+    :param text: The text to type.
+    :param command_key: The command key to hold down while pressing the key.
+    :param config: The configuration object that contains setting for how this action should be performed.
+    :return: void
+    """
 
-    @staticmethod
-    @dispatch(str, tuple)
-    def type_keys(text, command_keys, config=None):
-        """
-        Types the specified text.
-        :param text: The text to type.
-        :param command_keys: The tuple containing all the command keys to hold down while pressing the key.
-        :param config: The configuration object that contains setting for how this action should be performed.
-        :return: void
-        """
+    if config is None:
+        config = KeyboardConfig()
 
-        if config is None:
-            config = KeyboardConfig()
+    __down(command_key)
+    _Convergence.typewrite(text, config.interval, config.log_screenshot, config.action_duration)
+    __up(command_key)
 
-        Keyboard._down(command_keys)
-        _Convergence.typewrite(text, config.interval, config.log_screenshot, config.action_duration)
-        Keyboard._up(command_keys)
+    _pause(config.pause_after)
 
-        Keyboard._pause(config.pause_after)
-    # endregion
 
-    # region PROTECTED METHODS
-    @staticmethod
-    def _pause(pause_after):
-        if pause_after > 0:
-            time.sleep(pause_after)
+@dispatch(str, tuple)
+def type_keys(text, command_keys, config=None):
+    # noinspection GrazieInspection
+    """
+    Types the specified text.
+    :param text: The text to type.
+    :param command_keys: The tuple containing all the command keys to hold down while pressing the key.
+    :param config: The configuration object that contains setting for how this action should be performed.
+    :return: void
+    """
 
-    @staticmethod
-    def _down(command_keys):
-        """
-        Presses each of the specified keys in the list of keys.
-        :param command_keys: The list of keys to press.
-        :return: void
-        """
-        for i in range(len(command_keys)):
-            Keyboard.__down(command_keys[i])
+    if config is None:
+        config = KeyboardConfig()
 
-    @staticmethod
-    def _up(command_keys):
-        """
-        Releases each of the specified keys in the list of keys.
-        :param command_keys: The list of keys to release.
-        :return: void
-        """
-        for i in range(len(command_keys)):
-            Keyboard.__up(command_keys[i])
+    _down(command_keys)
+    _Convergence.typewrite(text, config.interval, config.log_screenshot, config.action_duration)
+    _up(command_keys)
 
-    @staticmethod
-    def __down(command_key):
-        """
-        Presses the key specified.
-        :param command_key: The key to press
-        :return: void
-        """
-        if command_key == CKeys.ALT:
-            _Convergence.key_down(CKeys.ALT, False, True)
-        elif command_key == CKeys.CTRL:
-            _Convergence.key_down(CKeys.CTRL, False, True)
-        elif command_key == CKeys.SHIFT:
-            _Convergence.key_down(CKeys.SHIFT, False, True)
-        elif command_key == CKeys.WIN:
-            _Convergence.key_down(CKeys.WIN, False, True)
-        elif command_key == CKeys.FN:
-            _Convergence.key_down(CKeys.FN, False, True)
-        elif command_key == CKeys.OPT:
-            _Convergence.key_down(CKeys.OPT, False, True)
-        elif command_key == CKeys.CMD:
-            _Convergence.key_down(CKeys.CMD, False, True)
+    _pause(config.pause_after)
+# endregion
 
-    @staticmethod
-    def __up(command_key):
-        """
-        Releases the key specified.
-        :param command_key: The key to release
-        :return: void
-        """
-        if command_key == CKeys.ALT:
-            _Convergence.key_up(CKeys.ALT, False, True)
-        elif command_key == CKeys.CTRL:
-            _Convergence.key_up(CKeys.CTRL, False, True)
-        elif command_key == CKeys.SHIFT:
-            _Convergence.key_up(CKeys.SHIFT, False, True)
-        elif command_key == CKeys.WIN:
-            _Convergence.key_up(CKeys.WIN, False, True)
-        elif command_key == CKeys.FN:
-            _Convergence.key_up(CKeys.FN, False, True)
-        elif command_key == CKeys.OPT:
-            _Convergence.key_up(CKeys.OPT, False, True)
-        elif command_key == CKeys.CMD:
-            _Convergence.key_up(CKeys.CMD, False, True)
-    # endregion
 
-# class Console:
-#     is_test = False
-#
-#     @staticmethod
-#     def write(text):
-#         print(text, end='')
-#
-#     @staticmethod
-#     def writeln(text):
-#         print(text)
-#
-#     @staticmethod
-#     def forecolor(color):
-#         if sys.platform == 'win32' and not Console.is_test:
-#             if color == Fore.RED:
-#                 WConio2.textcolor(WConio2.RED)
-#             elif color == Fore.YELLOW:
-#                 WConio2.textcolor(WConio2.YELLOW)
-#             elif color == Fore.CYAN:
-#                 WConio2.textcolor(WConio2.CYAN)
-#             elif color == Fore.GREEN:
-#                 WConio2.textcolor(WConio2.GREEN)
-#             elif color == Fore.WHITE:
-#                 WConio2.textcolor(WConio2.LIGHTGRAY)
-#             elif color == Fore.BLUE:
-#                 WConio2.textcolor(WConio2.BLUE)
-#             elif color == Fore.BLACK:
-#                 WConio2.textcolor(WConio2.BLACK)
-#             elif color == Fore.MAGENTA:
-#                 WConio2.textcolor(WConio2.MAGENTA)
-#             elif color == Fore.LIGHTRED_EX:
-#                 WConio2.textcolor(WConio2.LIGHTRED)
-#             elif color == Fore.LIGHTYELLOW_EX:
-#                 WConio2.textcolor(WConio2.LIGHTGRAY)
-#             elif color == Fore.LIGHTBLACK_EX:
-#                 WConio2.textcolor(WConio2.DARKGRAY)
-#             elif color == Fore.LIGHTBLUE_EX:
-#                 WConio2.textcolor(WConio2.LIGHTBLUE)
-#             elif color == Fore.LIGHTCYAN_EX:
-#                 WConio2.textcolor(WConio2.LIGHTCYAN)
-#             elif color == Fore.LIGHTGREEN_EX:
-#                 WConio2.textcolor(WConio2.LIGHTGREEN)
-#             elif color == Fore.LIGHTMAGENTA_EX:
-#                 WConio2.textcolor(WConio2.LIGHTMAGENTA)
-#             elif color == Fore.LIGHTWHITE_EX:
-#                 WConio2.textcolor(WConio2.WHITE)
-#         else:
-#             print(color, end='')
+# region PROTECTED METHODS
+def _pause(pause_after):
+    if pause_after > 0:
+        time.sleep(pause_after)
+
+
+def _down(command_keys):
+    # noinspection GrazieInspection
+    """
+    Presses each of the specified keys in the list of keys.
+    :param command_keys: The list of keys to press.
+    :return: void
+    """
+    for i in range(len(command_keys)):
+        __down(command_keys[i])
+
+
+def _up(command_keys):
+    # noinspection GrazieInspection
+    """
+    Releases each of the specified keys in the list of keys.
+    :param command_keys: The list of keys to release.
+    :return: void
+    """
+    for i in range(len(command_keys)):
+        __up(command_keys[i])
+
+
+def __down(command_key):
+    # noinspection GrazieInspection
+    """
+    Presses the key specified.
+    :param command_key: The key to press
+    :return: void
+    """
+    if command_key == CKeys.ALT:
+        _Convergence.key_down(CKeys.ALT, False, True)
+    elif command_key == CKeys.CTRL:
+        _Convergence.key_down(CKeys.CTRL, False, True)
+    elif command_key == CKeys.SHIFT:
+        _Convergence.key_down(CKeys.SHIFT, False, True)
+    elif command_key == CKeys.WIN:
+        _Convergence.key_down(CKeys.WIN, False, True)
+    elif command_key == CKeys.FN:
+        _Convergence.key_down(CKeys.FN, False, True)
+    elif command_key == CKeys.OPT:
+        _Convergence.key_down(CKeys.OPT, False, True)
+    elif command_key == CKeys.CMD:
+        _Convergence.key_down(CKeys.CMD, False, True)
+
+
+def __up(command_key):
+    # noinspection GrazieInspection
+    """
+    Releases the key specified.
+    :param command_key: The key to release
+    :return: void
+    """
+    if command_key == CKeys.ALT:
+        _Convergence.key_up(CKeys.ALT, False, True)
+    elif command_key == CKeys.CTRL:
+        _Convergence.key_up(CKeys.CTRL, False, True)
+    elif command_key == CKeys.SHIFT:
+        _Convergence.key_up(CKeys.SHIFT, False, True)
+    elif command_key == CKeys.WIN:
+        _Convergence.key_up(CKeys.WIN, False, True)
+    elif command_key == CKeys.FN:
+        _Convergence.key_up(CKeys.FN, False, True)
+    elif command_key == CKeys.OPT:
+        _Convergence.key_up(CKeys.OPT, False, True)
+    elif command_key == CKeys.CMD:
+        _Convergence.key_up(CKeys.CMD, False, True)

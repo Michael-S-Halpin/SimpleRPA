@@ -1,6 +1,8 @@
+from abc import ABC
 from pywinauto import Application
 
-class GuiWin(Application):
+
+class GuiWin(Application, ABC):
     pass
 # app = Application().start("notepad.exe")
 #

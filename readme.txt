@@ -9,6 +9,7 @@ Dependencies:
 
 Windows:
   Tkinter: pip install tk
+  PyWinAuto: pip install pywinauto
 
 Linux:
   Xlib:    pip install xlib

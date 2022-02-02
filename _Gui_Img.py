@@ -1,12 +1,13 @@
 import os
+from . import Screen
+from . import Mouse
+from . import Keyboard
+from Mouse import MouseConfig
 from time import sleep
-from Screen import *
-from Mouse import *
-from Keyboard import *
 
 
 # noinspection PyMethodMayBeStatic
-class Application():
+class Application:
     app = None
 
     def __iter__(self):
